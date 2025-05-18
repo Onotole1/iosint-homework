@@ -11,11 +11,11 @@ class ProfileHeaderView: UIView {
     // MARK: - Константы
     private static let commonSpacing = 16.0
     private static let avatarSize: CGFloat = 100
-    
+
     private var statusText = "Listening to music"
-    
+
     // MARK: - Внутренние UIView
-    private let avatar = {
+    private let avatarImageView = {
         let imageRect = CGRect(x: 0, y: 0, width: avatarSize, height: avatarSize)
         let imageView = UIImageView(frame: imageRect)
         imageView.image = UIImage(named: "Mura")
@@ -25,8 +25,8 @@ class ProfileHeaderView: UIView {
         imageView.clipsToBounds = true
         return imageView
     }()
-    
-    private let titleLabel = {
+
+    private let fullNameLabel = {
         let titleLabel = UILabel()
         titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
         titleLabel.textColor = .black
@@ -34,7 +34,7 @@ class ProfileHeaderView: UIView {
         titleLabel.text = "Banana Cat"
         return titleLabel
     }()
-    
+
     private let showStatusButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitleColor(.white, for: .normal)
@@ -48,7 +48,7 @@ class ProfileHeaderView: UIView {
         button.setTitle("Set status", for: .normal)
         return button
     }()
-    
+
     private let statusLabel: UILabel = {
         let statusLabel = UILabel()
         statusLabel.font = .systemFont(ofSize: 14, weight: .regular)
@@ -56,7 +56,7 @@ class ProfileHeaderView: UIView {
         statusLabel.textAlignment = .left
         return statusLabel
     }()
-    
+
     private let statusTextField: UITextField = {
         let textField = UITextField()
         textField.font = .systemFont(ofSize: 15, weight: .regular)
@@ -64,17 +64,17 @@ class ProfileHeaderView: UIView {
         textField.placeholder = "Enter status..."
         textField.backgroundColor = .white
         textField.isUserInteractionEnabled = true
-        
+
         let horizontalSpacing = 8.0
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: horizontalSpacing, height: textField.frame.height))
         textField.leftViewMode = .always
         textField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: horizontalSpacing, height: textField.frame.height))
         textField.rightViewMode = .always
-    
+
         textField.layer.borderColor = UIColor.black.cgColor
         textField.layer.borderWidth = 1
         textField.layer.cornerRadius = 12
-        
+
         return textField
     }()
 
@@ -83,7 +83,7 @@ class ProfileHeaderView: UIView {
         super.init(frame: frame)
         setupView()
     }
-        
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
@@ -91,72 +91,56 @@ class ProfileHeaderView: UIView {
 
     // MARK: - Настройка вьюшек
     private func setupView() {
-        [avatar, titleLabel, showStatusButton, statusLabel, statusTextField].forEach { addSubview($0) }
-        
-        setupConstraints()
-        
-        statusLabel.text = statusText
-        statusTextField.text = statusText
-        
-        setupListeners()
-    }
-    
-    // MARK: - Настройка констрейнтов
-    private func setupConstraints() {
-        titleLabel.setupConstraints { view in
+        [avatarImageView, fullNameLabel, showStatusButton, statusLabel, statusTextField].forEach { addSubview($0) }
+
+        fullNameLabel.setupConstraints {
             [
-                view.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-                view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 27),
+                $0.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+                $0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 27)
             ]
         }
-        
-        avatar.setupConstraints { view in
+
+        avatarImageView.setupConstraints {
             [
-                view.widthAnchor.constraint(equalToConstant: Self.avatarSize),
-                view.heightAnchor.constraint(equalToConstant: Self.avatarSize),
-                view.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Self.commonSpacing),
-                view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Self.commonSpacing),
+                $0.widthAnchor.constraint(equalToConstant: Self.avatarSize),
+                $0.heightAnchor.constraint(equalToConstant: Self.avatarSize),
+                $0.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Self.commonSpacing),
+                $0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Self.commonSpacing)
             ]
         }
-        
-        showStatusButton.setupConstraints { view in
+
+        showStatusButton.setupConstraints {
             [
-                view.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Self.commonSpacing),
-                view.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Self.commonSpacing),
-                view.topAnchor.constraint(equalTo: statusTextField.bottomAnchor, constant: Self.commonSpacing),
-                view.heightAnchor.constraint(equalToConstant: 50),
+                $0.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Self.commonSpacing),
+                $0.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Self.commonSpacing),
+                $0.topAnchor.constraint(equalTo: statusTextField.bottomAnchor, constant: Self.commonSpacing),
+                $0.heightAnchor.constraint(equalToConstant: 50)
             ]
         }
-        
-        statusLabel.setupConstraints { view in
+        .on(.touchUpInside) { [weak self] _ in
+            guard let self = self else { return }
+            self.statusLabel.text = self.statusText
+        }
+
+        statusLabel.setText(statusText)
+            .setupConstraints {
+                [
+                    $0.leadingAnchor.constraint(equalTo: fullNameLabel.leadingAnchor),
+                    $0.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 34)
+                ]
+            }
+
+        statusTextField.setupConstraints {
             [
-                view.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-                view.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 34),
+                $0.leadingAnchor.constraint(equalTo: statusLabel.leadingAnchor),
+                $0.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 8),
+                $0.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Self.commonSpacing),
+                $0.heightAnchor.constraint(equalToConstant: 40)
             ]
         }
-        
-        statusTextField.setupConstraints { view in
-            [
-                view.leadingAnchor.constraint(equalTo: statusLabel.leadingAnchor),
-                view.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 8),
-                view.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Self.commonSpacing),
-                view.heightAnchor.constraint(equalToConstant: 40),
-            ]
+        .setText(statusText)
+        .on(.editingChanged) { [weak self] (textField: UITextField) in
+            self?.statusText = textField.text ?? ""
         }
-    }
-    
-    // MARK: - Установка обработчиков
-    private func setupListeners() {
-        showStatusButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        statusTextField.addTarget(self, action: #selector(statusTextChanged(_:)), for: .editingChanged)
-    }
-    
-    // MARK: - Обработчики
-    @objc private func buttonPressed() {
-        self.statusLabel.text = statusText
-    }
-    
-    @objc private func statusTextChanged(_ textField: UITextField) {
-        statusText = textField.text ?? ""
     }
 }

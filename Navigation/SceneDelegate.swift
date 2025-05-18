@@ -11,22 +11,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
-        
+
         let uitabbarcontroller = UITabBarController()
-        
+
         let feedViewController = UINavigationController(rootViewController: FeedViewController())
         feedViewController.tabBarItem.image = UIImage(systemName: "house")
         feedViewController.tabBarItem.title = "Feed"
-        
+
         let profileViewController = UINavigationController(rootViewController: ProfileViewController())
         profileViewController.tabBarItem.image = UIImage(systemName: "person.circle")
         profileViewController.tabBarItem.title = "Profile"
-        
+
         uitabbarcontroller.viewControllers = [feedViewController, profileViewController]
-        
+
         let window = UIWindow(windowScene: scene)
         window.rootViewController = uitabbarcontroller
         self.window = window
@@ -61,6 +60,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
-
 }
-

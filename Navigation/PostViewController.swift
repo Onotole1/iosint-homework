@@ -9,12 +9,12 @@ import UIKit
 
 class PostViewController: UIViewController {
     private var post: Post?
-    
+
     init(post: Post) {
         self.post = post
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -24,7 +24,7 @@ class PostViewController: UIViewController {
 
         title = post?.title ?? "Empty post"
         view.backgroundColor = .systemPink
-        
+
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "info.circle"),
             style: .plain,
@@ -32,7 +32,7 @@ class PostViewController: UIViewController {
             action: #selector(showInfo)
         )
     }
-    
+
     @objc private func showInfo() {
         present(InfoViewController(), animated: true)
     }

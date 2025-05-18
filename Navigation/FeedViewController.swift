@@ -8,25 +8,44 @@
 import UIKit
 
 class FeedViewController: UIViewController {
-    
+
+    private lazy var stackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        return stackView
+    }()
+
+    private lazy var buttons = {
+        let buttons = [UIButton(type: .system), UIButton(type: .system)]
+
+        buttons
+            .enumerated()
+            .forEach { index, button in
+                button.setTitle("To post \(index + 1)", for: .normal)
+            }
+
+        return buttons
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let postButton = UIButton(type: .system)
-        postButton.setTitle("To post", for: .normal)
-        postButton.addTarget(self, action: #selector(didTapPostButton), for: .touchUpInside)
-        postButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(postButton)
-        
-        NSLayoutConstraint.activate([
-            postButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            postButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
-    }
-    
-    @objc func didTapPostButton() {
-        let post = Post(title: "Test post")
-        navigationController?.pushViewController(PostViewController(post: post), animated: true)
+
+        buttons.forEach { stackView.addArrangedSubview($0) }
+        buttons.forEach { (button: UIButton) in
+            button.on(.touchUpInside) { [weak self] _ in
+                let post = Post(title: "Test post")
+                self?.navigationController?.pushViewController(PostViewController(post: post), animated: true)
+            }
+        }
+
+        view.addSubview(stackView)
+
+        stackView.setupConstraints {
+            [
+                $0.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                $0.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            ]
+        }
     }
 }
