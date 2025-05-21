@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         feedViewController.tabBarItem.image = UIImage(systemName: "house")
         feedViewController.tabBarItem.title = "Feed"
 
-        let profileViewController = UINavigationController(rootViewController: ProfileViewController())
+        let profileViewController = UINavigationController(rootViewController: LogInViewController())
         profileViewController.tabBarItem.image = UIImage(systemName: "person.circle")
         profileViewController.tabBarItem.title = "Profile"
 
