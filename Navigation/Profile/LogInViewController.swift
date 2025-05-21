@@ -212,7 +212,9 @@ class LogInViewController: UIViewController {
     // MARK: - Actions
 
     @objc func willShowKeyboard(_ notification: NSNotification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        guard let keyboardSize = (
+            notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        )?.cgRectValue else { return }
 
         let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
         let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height - tabBarHeight, right: 0)

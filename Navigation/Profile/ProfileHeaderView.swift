@@ -68,7 +68,9 @@ class ProfileHeaderView: UIView {
         let horizontalSpacing = 8.0
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: horizontalSpacing, height: textField.frame.height))
         textField.leftViewMode = .always
-        textField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: horizontalSpacing, height: textField.frame.height))
+        textField.rightView = UIView(
+            frame: CGRect(x: 0, y: 0, width: horizontalSpacing, height: textField.frame.height)
+        )
         textField.rightViewMode = .always
 
         textField.layer.borderColor = UIColor.black.cgColor
@@ -112,7 +114,8 @@ class ProfileHeaderView: UIView {
         showStatusButton.setupConstraints {
             [
                 $0.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Self.commonSpacing),
-                $0.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Self.commonSpacing),
+                $0.trailingAnchor
+                    .constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Self.commonSpacing),
                 $0.topAnchor.constraint(equalTo: statusTextField.bottomAnchor, constant: Self.commonSpacing),
                 $0.heightAnchor.constraint(equalToConstant: 50)
             ]
@@ -134,7 +137,8 @@ class ProfileHeaderView: UIView {
             [
                 $0.leadingAnchor.constraint(equalTo: statusLabel.leadingAnchor),
                 $0.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 8),
-                $0.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Self.commonSpacing),
+                $0.trailingAnchor
+                    .constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Self.commonSpacing),
                 $0.heightAnchor.constraint(equalToConstant: 40)
             ]
         }
