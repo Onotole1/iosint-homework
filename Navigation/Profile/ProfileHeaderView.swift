@@ -9,12 +9,14 @@ import UIKit
 
 class ProfileHeaderView: UIView {
     // MARK: - Константы
+
     private static let commonSpacing = 16.0
     private static let avatarSize: CGFloat = 100
 
-    private var statusText = "Listening to music"
+    private var statusText = ""
 
     // MARK: - Внутренние UIView
+
     private let avatarImageView = {
         let imageRect = CGRect(x: 0, y: 0, width: avatarSize, height: avatarSize)
         let imageView = UIImageView(frame: imageRect)
@@ -35,7 +37,7 @@ class ProfileHeaderView: UIView {
         return titleLabel
     }()
 
-    private let showStatusButton: UIButton = {
+    private let setStatusButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.systemBlue
@@ -81,6 +83,7 @@ class ProfileHeaderView: UIView {
     }()
 
     // MARK: - Инициализаторы
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -92,59 +95,84 @@ class ProfileHeaderView: UIView {
     }
 
     // MARK: - Настройка вьюшек
+
     private func setupView() {
-        [avatarImageView, fullNameLabel, showStatusButton, statusLabel, statusTextField].forEach { addSubview($0) }
+        addSubviews()
 
-        fullNameLabel.setupConstraints {
-            [
-                $0.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-                $0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 27)
-            ]
-        }
+        setupSubviews()
+    }
 
-        avatarImageView.setupConstraints {
-            [
-                $0.widthAnchor.constraint(equalToConstant: Self.avatarSize),
-                $0.heightAnchor.constraint(equalToConstant: Self.avatarSize),
-                $0.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Self.commonSpacing),
-                $0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Self.commonSpacing)
-            ]
-        }
+    private func addSubviews() {
+        [avatarImageView, fullNameLabel, setStatusButton, statusLabel, statusTextField].forEach { addSubview($0) }
+    }
 
-        showStatusButton.setupConstraints {
-            [
-                $0.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Self.commonSpacing),
-                $0.trailingAnchor
-                    .constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Self.commonSpacing),
-                $0.topAnchor.constraint(equalTo: statusTextField.bottomAnchor, constant: Self.commonSpacing),
-                $0.heightAnchor.constraint(equalToConstant: 50)
-            ]
-        }
-        .on(.touchUpInside) { [weak self] _ in
-            guard let self = self else { return }
-            self.statusLabel.text = self.statusText
-        }
+    private func setupSubviews() {
+        setupFullNameLabel()
+        setupAvatarImageView()
+        setupSetStatusButton()
+        setupStatusLabel()
+        setupStatusTextField()
+    }
 
-        statusLabel.setText(statusText)
-            .setupConstraints {
-                [
-                    $0.leadingAnchor.constraint(equalTo: fullNameLabel.leadingAnchor),
-                    $0.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 34)
-                ]
-            }
-
+    private func setupStatusTextField() {
         statusTextField.setupConstraints {
             [
                 $0.leadingAnchor.constraint(equalTo: statusLabel.leadingAnchor),
                 $0.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 8),
                 $0.trailingAnchor
                     .constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Self.commonSpacing),
-                $0.heightAnchor.constraint(equalToConstant: 40)
+                $0.heightAnchor.constraint(equalToConstant: 40),
             ]
         }
         .setText(statusText)
         .on(.editingChanged) { [weak self] (textField: UITextField) in
             self?.statusText = textField.text ?? ""
+        }
+    }
+
+    private func setupSetStatusButton() {
+        setStatusButton.setupConstraints {
+            [
+                $0.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Self.commonSpacing),
+                $0.trailingAnchor
+                    .constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Self.commonSpacing),
+                $0.topAnchor.constraint(equalTo: statusTextField.bottomAnchor, constant: Self.commonSpacing),
+                $0.heightAnchor.constraint(equalToConstant: 50),
+                $0.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            ]
+        }
+        .on(.touchUpInside) { [weak self] _ in
+            guard let self = self else { return }
+            self.statusLabel.text = self.statusText
+        }
+    }
+
+    private func setupFullNameLabel() {
+        fullNameLabel.setupConstraints {
+            [
+                $0.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+                $0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 27),
+            ]
+        }
+    }
+
+    private func setupAvatarImageView() {
+        avatarImageView.setupConstraints {
+            [
+                $0.widthAnchor.constraint(equalToConstant: Self.avatarSize),
+                $0.heightAnchor.constraint(equalToConstant: Self.avatarSize),
+                $0.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Self.commonSpacing),
+                $0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Self.commonSpacing),
+            ]
+        }
+    }
+
+    private func setupStatusLabel() {
+        statusLabel.setupConstraints {
+            [
+                $0.leadingAnchor.constraint(equalTo: fullNameLabel.leadingAnchor),
+                $0.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 34),
+            ]
         }
     }
 }
