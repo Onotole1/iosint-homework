@@ -9,8 +9,8 @@ import UIKit
 
 extension UIView {
     @discardableResult
-    func setupConstraints(_ constraints: (UIView) -> [NSLayoutConstraint]) -> UIView {
-        self.translatesAutoresizingMaskIntoConstraints = false
+    func setupConstraints(_ constraints: (Self) -> [NSLayoutConstraint]) -> Self {
+        translatesAutoresizingMaskIntoConstraints = false
         let constraintsToActivate = constraints(self)
         NSLayoutConstraint.activate(constraintsToActivate)
         return self
