@@ -34,8 +34,7 @@ class FeedViewController: UIViewController {
         buttons.forEach { stackView.addArrangedSubview($0) }
         buttons.forEach { (button: UIButton) in
             button.on(.touchUpInside) { [weak self] _ in
-                let post = Post(title: "Test post")
-                self?.navigationController?.pushViewController(PostViewController(post: post), animated: true)
+                self?.navigationController?.pushViewController(PostViewController(nil), animated: true)
             }
         }
 
@@ -44,7 +43,7 @@ class FeedViewController: UIViewController {
         stackView.setupConstraints {
             [
                 $0.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                $0.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+                $0.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             ]
         }
     }
