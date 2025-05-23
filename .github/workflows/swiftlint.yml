@@ -8,7 +8,7 @@ on:
       - '.swiftlint.yml'
       - 'Navigation/**/*.swift'
   pull_request:
-    branches: [ "main" ]
+    branches: [ "*" ]
     paths:
       - '.github/workflows/swiftlint.yml'
       - '.swiftlint.yml'
