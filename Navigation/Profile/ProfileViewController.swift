@@ -63,14 +63,12 @@ class ProfileViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        let safeAreaGuide = view.safeAreaLayoutGuide
-
         tableView.setupConstraints {
             [
-                $0.leadingAnchor.constraint(equalTo: safeAreaGuide.leadingAnchor),
-                $0.trailingAnchor.constraint(equalTo: safeAreaGuide.trailingAnchor),
-                $0.topAnchor.constraint(equalTo: safeAreaGuide.topAnchor),
-                $0.bottomAnchor.constraint(equalTo: safeAreaGuide.bottomAnchor),
+                $0.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+                $0.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+                $0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+                $0.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             ]
         }
     }

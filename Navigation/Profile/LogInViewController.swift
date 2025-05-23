@@ -181,7 +181,6 @@ class LogInViewController: UIViewController {
         }
         .on(.touchUpInside) { [weak self] _ in
             guard let navigationController = self?.navigationController else { return }
-            navigationController.navigationBar.isHidden = false
             navigationController.pushViewController(ProfileViewController(), animated: true)
         }
     }

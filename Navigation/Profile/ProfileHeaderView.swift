@@ -18,8 +18,7 @@ class ProfileHeaderView: UIView {
     // MARK: - Внутренние UIView
 
     private let avatarImageView = {
-        let imageRect = CGRect(x: 0, y: 0, width: avatarSize, height: avatarSize)
-        let imageView = UIImageView(frame: imageRect)
+        let imageView = UIImageView()
         imageView.image = UIImage(named: "Mura")
         imageView.layer.cornerRadius = avatarSize / 2
         imageView.layer.borderWidth = 3
@@ -124,7 +123,6 @@ class ProfileHeaderView: UIView {
                 $0.heightAnchor.constraint(equalToConstant: 40),
             ]
         }
-        .setText(statusText)
         .on(.editingChanged) { [weak self] (textField: UITextField) in
             self?.statusText = textField.text ?? ""
         }
