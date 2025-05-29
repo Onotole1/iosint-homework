@@ -11,4 +11,8 @@ extension UIViewController {
     var safeAreaLayoutGuide: UILayoutGuide {
         return view.safeAreaLayoutGuide
     }
+
+    func hideNavigationBar() {
+        navigationController?.isNavigationBarHidden = true
+    }
 }

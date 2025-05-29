@@ -18,20 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let scene = (scene as? UIWindowScene) else { return }
 
-        let uitabbarcontroller = UITabBarController()
-
-        let feedViewController = UINavigationController(rootViewController: FeedViewController())
-        feedViewController.tabBarItem.image = UIImage(systemName: "house")
-        feedViewController.tabBarItem.title = "Feed"
-
-        let profileViewController = UINavigationController(rootViewController: LogInViewController())
-        profileViewController.tabBarItem.image = UIImage(systemName: "person.circle")
-        profileViewController.tabBarItem.title = "Profile"
-
-        uitabbarcontroller.viewControllers = [feedViewController, profileViewController]
-
         let window = UIWindow(windowScene: scene)
-        window.rootViewController = uitabbarcontroller
+        window.rootViewController = LogInViewController()
         self.window = window
         window.makeKeyAndVisible()
     }

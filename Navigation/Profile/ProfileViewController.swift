@@ -16,7 +16,7 @@ class ProfileViewController: UIViewController {
     // MARK: - Subviews
 
     private lazy var tableView: UITableView = {
-        UITableView()
+        UITableView(frame: .zero, style: .grouped)
     }()
 
     private lazy var headerView: ProfileHeaderView = {
@@ -41,12 +41,12 @@ class ProfileViewController: UIViewController {
         addSubviews()
         setupConstraints()
         tuneTableView()
+        hideNavigationBar()
     }
 
     // MARK: - Private
 
     private func tuneTableView() {
-        tableView.setAndLayout(headerView: headerView)
         tableView.tableFooterView = tableFooterView
 
         tableView.register(
@@ -93,4 +93,12 @@ extension ProfileViewController: UITableViewDataSource {
     }
 }
 
-extension ProfileViewController: UITableViewDelegate {}
+extension ProfileViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0 {
+            headerView
+        } else {
+            nil
+        }
+    }
+}

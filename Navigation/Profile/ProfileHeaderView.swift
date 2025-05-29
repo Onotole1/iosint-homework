@@ -55,6 +55,7 @@ class ProfileHeaderView: UIView {
         statusLabel.font = .systemFont(ofSize: 14, weight: .regular)
         statusLabel.textColor = .gray
         statusLabel.textAlignment = .left
+        statusLabel.text = "Hello, world!"
         return statusLabel
     }()
 

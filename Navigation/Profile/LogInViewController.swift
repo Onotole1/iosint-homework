@@ -180,9 +180,24 @@ class LogInViewController: UIViewController {
             ]
         }
         .on(.touchUpInside) { [weak self] _ in
-            guard let navigationController = self?.navigationController else { return }
-            navigationController.pushViewController(ProfileViewController(), animated: true)
+            self?.navigateToMain()
         }
+    }
+
+    private func navigateToMain() {
+        let uitabbarcontroller = UITabBarController()
+
+        let feedViewController = UINavigationController(rootViewController: FeedViewController())
+        feedViewController.tabBarItem.image = UIImage(systemName: "house")
+        feedViewController.tabBarItem.title = "Feed"
+
+        let profileViewController = UINavigationController(rootViewController: ProfileViewController())
+        profileViewController.tabBarItem.image = UIImage(systemName: "person.circle")
+        profileViewController.tabBarItem.title = "Profile"
+
+        uitabbarcontroller.viewControllers = [feedViewController, profileViewController]
+
+        AppNavigation.resetToNewRootViewController(uitabbarcontroller)
     }
 
     private func hideKeyboardOnTapOutside() {
