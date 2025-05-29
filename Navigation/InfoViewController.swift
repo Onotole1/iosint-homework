@@ -22,7 +22,7 @@ class InfoViewController: UIViewController {
 
         NSLayoutConstraint.activate([
             alertButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            alertButton.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            alertButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
 

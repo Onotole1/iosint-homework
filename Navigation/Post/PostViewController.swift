@@ -10,7 +10,7 @@ import UIKit
 class PostViewController: UIViewController {
     private var post: Post?
 
-    init(post: Post) {
+    init(_ post: Post?) {
         self.post = post
         super.init(nibName: nil, bundle: nil)
     }
@@ -22,7 +22,7 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = post?.title ?? "Empty post"
+        title = "Empty post"
         view.backgroundColor = .systemPink
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(

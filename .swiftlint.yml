@@ -3,3 +3,5 @@ line_length:
   error: 140
   ignores_comments: true
   ignores_urls: true
+trailing_comma:
+  mandatory_comma: true

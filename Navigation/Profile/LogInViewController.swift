@@ -138,7 +138,7 @@ class LogInViewController: UIViewController {
                 $0.widthAnchor.constraint(equalToConstant: logoSize),
                 $0.heightAnchor.constraint(equalToConstant: logoSize),
                 $0.topAnchor.constraint(equalTo: contentView.topAnchor, constant: imageViewVerticalSpacing),
-                $0.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+                $0.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             ]
         }
 
@@ -147,7 +147,7 @@ class LogInViewController: UIViewController {
                 $0.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
                 $0.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
                 $0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-                $0.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+                $0.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             ]
         }
 
@@ -158,7 +158,7 @@ class LogInViewController: UIViewController {
                 $0.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
                 $0.topAnchor.constraint(equalTo: scrollView.topAnchor),
                 $0.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-                $0.bottomAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 16)
+                $0.bottomAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 16),
             ]
         }
 
@@ -167,7 +167,7 @@ class LogInViewController: UIViewController {
                 $0.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: imageViewVerticalSpacing),
                 $0.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Self.commonSpacing),
                 $0.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Self.commonSpacing),
-                $0.heightAnchor.constraint(equalToConstant: 100)
+                $0.heightAnchor.constraint(equalToConstant: 100),
             ]
         }
 
@@ -176,14 +176,28 @@ class LogInViewController: UIViewController {
                 $0.heightAnchor.constraint(equalToConstant: 50),
                 $0.topAnchor.constraint(equalTo: fieldsStackView.bottomAnchor, constant: Self.commonSpacing),
                 $0.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Self.commonSpacing),
-                $0.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Self.commonSpacing)
+                $0.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Self.commonSpacing),
             ]
         }
         .on(.touchUpInside) { [weak self] _ in
-            guard let navigationController = self?.navigationController else { return }
-            navigationController.navigationBar.isHidden = false
-            navigationController.pushViewController(ProfileViewController(), animated: true)
+            self?.navigateToMain()
         }
+    }
+
+    private func navigateToMain() {
+        let uitabbarcontroller = UITabBarController()
+
+        let feedViewController = UINavigationController(rootViewController: FeedViewController())
+        feedViewController.tabBarItem.image = UIImage(systemName: "house")
+        feedViewController.tabBarItem.title = "Feed"
+
+        let profileViewController = UINavigationController(rootViewController: ProfileViewController())
+        profileViewController.tabBarItem.image = UIImage(systemName: "person.circle")
+        profileViewController.tabBarItem.title = "Profile"
+
+        uitabbarcontroller.viewControllers = [feedViewController, profileViewController]
+
+        AppNavigation.resetToNewRootViewController(uitabbarcontroller)
     }
 
     private func hideKeyboardOnTapOutside() {
