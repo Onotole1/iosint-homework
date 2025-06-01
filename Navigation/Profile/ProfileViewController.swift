@@ -11,7 +11,8 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Data
 
-    private let data = GetPosts.fetch()
+    private let data: [ProfileViewModelItem] = [PhotosViewModelItem()] + GetPosts.fetch()
+        .map(PostViewModelItem.fromPost)
 
     // MARK: - Subviews
 
@@ -26,12 +27,6 @@ class ProfileViewController: UIViewController {
     private lazy var tableFooterView: UIView = {
         UIView()
     }()
-
-    // MARK: - Cell Ids
-
-    private enum CellReuseID: String {
-        case post = "PostTableViewCell_ReuseID"
-    }
 
     // MARK: - Lifecycle
 
@@ -49,10 +44,8 @@ class ProfileViewController: UIViewController {
     private func tuneTableView() {
         tableView.tableFooterView = tableFooterView
 
-        tableView.register(
-            PostTableViewCell.self,
-            forCellReuseIdentifier: CellReuseID.post.rawValue
-        )
+        tableView.register(PostTableViewCell.self)
+        tableView.register(PhotosTableViewCell.self)
 
         tableView.dataSource = self
         tableView.delegate = self
@@ -80,16 +73,17 @@ extension ProfileViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CellReuseID.post.rawValue,
-            for: indexPath
-        ) as? PostTableViewCell else {
-            fatalError("could not dequeueReusableCell")
+        let item = data[indexPath.row]
+        switch item {
+        case let postItem as PostViewModelItem:
+            let cell: PostTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+            cell.update(postItem)
+            return cell
+        case _ as PhotosViewModelItem:
+            return tableView.dequeueReusableCell(for: indexPath) as PhotosTableViewCell
+        default:
+            fatalError("Unknown item type")
         }
-
-        cell.update(data[indexPath.row])
-
-        return cell
     }
 }
 
@@ -99,6 +93,16 @@ extension ProfileViewController: UITableViewDelegate {
             headerView
         } else {
             nil
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = data[indexPath.row]
+        switch item {
+        case _ as PhotosViewModelItem:
+            navigationController?.pushViewController(PhotosViewController(), animated: true)
+        default:
+            break
         }
     }
 }

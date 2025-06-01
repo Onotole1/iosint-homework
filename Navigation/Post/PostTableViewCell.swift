@@ -138,7 +138,7 @@ class PostTableViewCell: UITableViewCell {
 
     // MARK: - Public
 
-    func update(_ model: Post) {
+    func update(_ model: PostViewModelItem) {
         authorLabel.text = model.author
         photoImageView.image = UIImage(named: model.image)
         descriptionLabel.text = model.description

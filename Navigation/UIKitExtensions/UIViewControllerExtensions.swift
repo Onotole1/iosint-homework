@@ -15,4 +15,8 @@ extension UIViewController {
     func hideNavigationBar() {
         navigationController?.isNavigationBarHidden = true
     }
+
+    func showNavigationBar() {
+        navigationController?.isNavigationBarHidden = false
+    }
 }
