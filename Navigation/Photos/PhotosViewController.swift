@@ -11,8 +11,8 @@ class PhotosViewController: UIViewController {
     private static let rowCount = 3.0
     private static let offset = 8.0
 
-    private let images = GetPhotos.fetch().map {
-        PhotoViewModelItem(image: UIImage(named: $0)!)
+    private let images = GetPhotos.shared.getImages().map {
+        PhotoViewModelItem(image: $0)
     }
 
     private lazy var collectionView: UICollectionView = {

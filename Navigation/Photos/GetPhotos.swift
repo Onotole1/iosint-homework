@@ -4,10 +4,14 @@
 //
 //  Created by Анатолий Спитченко on 02.06.2025.
 //
+import UIKit
 
 struct GetPhotos {
-    static func fetch() -> [String] {
-        [
+    static let shared = GetPhotos()
+
+    private init() {
+        // Инициализация кэша при создании синглтона
+        self.images = [
             "castle_1",
             "castle_2",
             "castle_3",
@@ -29,6 +33,13 @@ struct GetPhotos {
             "vegetables_3",
             "vegetables_4",
         ]
-            .shuffled()
+        .map { UIImage(named: $0)! }
+        .shuffled()
+    }
+
+    private let images: [UIImage]
+
+    func getImages() -> [UIImage] {
+        return images
     }
 }

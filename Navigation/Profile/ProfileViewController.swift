@@ -11,8 +11,15 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Data
 
-    private let data: [ProfileViewModelItem] = [PhotosViewModelItem()] + GetPosts.fetch()
-        .map(PostViewModelItem.fromPost)
+    private let data: [ProfileViewModelItem] = {
+        let images = GetPhotos.shared.getImages().take(4)
+        let photosViewModelItems: [PhotosViewModelItem] = [PhotosViewModelItem(images: images)]
+
+        let posts = GetPosts.fetch()
+        let postViewModels = posts.map(PostViewModelItem.fromPost)
+
+        return photosViewModelItems + postViewModels
+    }()
 
     // MARK: - Subviews
 
@@ -84,8 +91,10 @@ extension ProfileViewController: UITableViewDataSource {
             let cell: PostTableViewCell = tableView.dequeueReusableCell(for: indexPath)
             cell.update(postItem)
             return cell
-        case _ as PhotosViewModelItem:
-            return tableView.dequeueReusableCell(for: indexPath) as PhotosTableViewCell
+        case let photosItem as PhotosViewModelItem:
+            let cell: PhotosTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+            cell.update(images: photosItem.images)
+            return cell
         default:
             fatalError("Unknown item type")
         }

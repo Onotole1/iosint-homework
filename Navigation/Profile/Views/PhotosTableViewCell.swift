@@ -32,21 +32,33 @@ class PhotosTableViewCell: UITableViewCell {
         stackView.alignment = .fill
         stackView.spacing = 8
 
-        [
-            UIImage(named: "dragon_1"),
-            UIImage(named: "castle_1"),
-            UIImage(named: "fish_1"),
-            UIImage(named: "graphs_1"),
-        ].forEach {
-            let imageView = UIImageView(image: $0)
-            imageView.contentMode = .scaleAspectFill
-            imageView.clipsToBounds = true
-            imageView.layer.cornerRadius = 8
-            stackView.addArrangedSubview(imageView)
-        }
-
         return stackView
     }()
+
+    // MARK: - Update
+    func update(images: [UIImage]) {
+        let existingImageViews = stackView.arrangedSubviews.filter {
+            $0 is UIImageView && $0 !== title && $0 !== navigateIcon
+        }
+
+        if existingImageViews.count > images.count {
+            for index in images.count..<existingImageViews.count {
+                existingImageViews[index].removeFromSuperview()
+            }
+        }
+
+        for (index, image) in images.enumerated() {
+            if index < existingImageViews.count {
+                (existingImageViews[index] as? UIImageView)?.image = image
+            } else {
+                let imageView = UIImageView(image: image)
+                imageView.contentMode = .scaleAspectFill
+                imageView.clipsToBounds = true
+                imageView.layer.cornerRadius = 8
+                stackView.addArrangedSubview(imageView)
+            }
+        }
+    }
 
     // MARK: - Lifecycle
 
@@ -64,6 +76,8 @@ class PhotosTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Setup
 
     private func tuneView() {
         selectionStyle = .none
