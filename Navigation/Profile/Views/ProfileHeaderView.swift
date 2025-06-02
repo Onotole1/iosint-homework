@@ -17,17 +17,17 @@ class ProfileHeaderView: UIView {
 
     // MARK: - Внутренние UIView
 
-    private let avatarImageView = {
+    private lazy var avatarImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Mura")
-        imageView.layer.cornerRadius = avatarSize / 2
+        imageView.layer.cornerRadius = Self.avatarSize / 2
         imageView.layer.borderWidth = 3
         imageView.layer.borderColor = UIColor.white.cgColor
         imageView.clipsToBounds = true
         return imageView
     }()
 
-    private let fullNameLabel = {
+    private lazy var fullNameLabel = {
         let titleLabel = UILabel()
         titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
         titleLabel.textColor = .black
@@ -36,7 +36,7 @@ class ProfileHeaderView: UIView {
         return titleLabel
     }()
 
-    private let setStatusButton: UIButton = {
+    private lazy var setStatusButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.systemBlue
@@ -50,7 +50,7 @@ class ProfileHeaderView: UIView {
         return button
     }()
 
-    private let statusLabel: UILabel = {
+    private lazy var statusLabel: UILabel = {
         let statusLabel = UILabel()
         statusLabel.font = .systemFont(ofSize: 14, weight: .regular)
         statusLabel.textColor = .gray
@@ -59,7 +59,7 @@ class ProfileHeaderView: UIView {
         return statusLabel
     }()
 
-    private let statusTextField: UITextField = {
+    private lazy var statusTextField: UITextField = {
         let textField = UITextField()
         textField.font = .systemFont(ofSize: 15, weight: .regular)
         textField.textColor = .black

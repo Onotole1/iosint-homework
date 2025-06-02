@@ -15,11 +15,11 @@ class PhotosViewController: UIViewController {
         PhotoViewModelItem(image: UIImage(named: $0)!)
     }
 
-    private let collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = offset
-        layout.minimumLineSpacing = offset
-        layout.sectionInset = UIEdgeInsets(top: offset, left: offset, bottom: offset, right: offset)
+        layout.minimumInteritemSpacing = Self.offset
+        layout.minimumLineSpacing = Self.offset
+        layout.sectionInset = UIEdgeInsets(top: Self.offset, left: Self.offset, bottom: Self.offset, right: Self.offset)
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 

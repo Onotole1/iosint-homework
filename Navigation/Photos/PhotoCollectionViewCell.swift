@@ -9,7 +9,7 @@ import UIKit
 
 class PhotoCollectionViewCell: UICollectionViewCell {
 
-    private let imageView: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
