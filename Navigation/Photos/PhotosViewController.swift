@@ -31,6 +31,7 @@ class PhotosViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .systemBackground
         setupNavigationBar()
         setupCollectionView()
     }
