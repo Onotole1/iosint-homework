@@ -103,6 +103,8 @@ class LogInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .systemBackground
+
         addSubviews()
 
         setupViews()
@@ -196,6 +198,7 @@ class LogInViewController: UIViewController {
         profileViewController.tabBarItem.title = "Profile"
 
         uitabbarcontroller.viewControllers = [feedViewController, profileViewController]
+        uitabbarcontroller.selectedIndex = 1
 
         AppNavigation.resetToNewRootViewController(uitabbarcontroller)
     }

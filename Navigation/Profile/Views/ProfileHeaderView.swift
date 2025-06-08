@@ -10,17 +10,66 @@ import UIKit
 class ProfileHeaderView: UIView {
     // MARK: - Константы
 
+    private static let avatarAnimationDuration: TimeInterval = 0.3
+    private static let closeButtonAnimationDuration: TimeInterval = 0.3
     private static let commonSpacing = 16.0
     private static let avatarSize: CGFloat = 100
+    private static let avatarCornerRadius: CGFloat = avatarSize / 2
 
+    private static func createOverlayView(window: UIWindow) -> UIView {
+        let overlay = UIView()
+        overlay.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        overlay.alpha = 0
+        window.addSubview(overlay)
+        overlay.frame = window.bounds
+        return overlay
+    }
+
+    private static func createCloseButton(window: UIWindow) -> UIButton {
+        let closeButton = UIButton(type: .custom)
+        closeButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
+        closeButton.tintColor = .white
+        closeButton.isUserInteractionEnabled = true
+        closeButton.alpha = 0
+        window.addSubview(closeButton)
+        let closeButtonSize = 44.0
+        closeButton.setupConstraints {
+            [
+                $0.topAnchor.constraint(equalTo: window.safeAreaLayoutGuide.topAnchor, constant: commonSpacing),
+                $0.trailingAnchor.constraint(
+                    equalTo: window.safeAreaLayoutGuide.trailingAnchor,
+                    constant: -commonSpacing,
+                ),
+                $0.widthAnchor.constraint(equalToConstant: closeButtonSize),
+                $0.heightAnchor.constraint(equalToConstant: closeButtonSize),
+            ]
+        }
+        return closeButton
+    }
+
+    private static func createAvatarTargetRect(window: UIWindow) -> CGRect {
+        let screenWidth = window.bounds.width
+        let newHeight = screenWidth
+        let newX = 0.0
+        let newY = (window.bounds.height - newHeight) / 2
+        return CGRect(x: newX, y: newY, width: screenWidth, height: newHeight)
+    }
+
+    // MARK: - Дополнительные свойства
+    private var originalAvatarFrame: CGRect?
+    private var isAvatarExpanded = false
     private var statusText = ""
+
+    private weak var overlayView: UIView?
+    private weak var closeButton: UIButton?
 
     // MARK: - Внутренние UIView
 
     private lazy var avatarImageView = {
         let imageView = UIImageView()
+        imageView.isUserInteractionEnabled = true
         imageView.image = UIImage(named: "Mura")
-        imageView.layer.cornerRadius = Self.avatarSize / 2
+        imageView.layer.cornerRadius = Self.avatarCornerRadius
         imageView.layer.borderWidth = 3
         imageView.layer.borderColor = UIColor.white.cgColor
         imageView.clipsToBounds = true
@@ -141,7 +190,7 @@ class ProfileHeaderView: UIView {
             ]
         }
         .on(.touchUpInside) { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             self.statusLabel.text = self.statusText
         }
     }
@@ -164,6 +213,9 @@ class ProfileHeaderView: UIView {
                 $0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Self.commonSpacing),
             ]
         }
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(avatarTapped))
+        avatarImageView.addGestureRecognizer(tapGesture)
     }
 
     private func setupStatusLabel() {
@@ -173,5 +225,69 @@ class ProfileHeaderView: UIView {
                 $0.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 34),
             ]
         }
+    }
+
+    // MARK: - Анимации
+
+    @objc private func avatarTapped() {
+        guard !isAvatarExpanded, let window else { return }
+        isAvatarExpanded = true
+
+        originalAvatarFrame = avatarImageView.frame
+
+        let overlay = Self.createOverlayView(window: window)
+        self.overlayView = overlay
+
+        let closeButton = Self.createCloseButton(window: window)
+        closeButton.on(.touchUpInside) { _ in
+            self.closeTapped()
+        }
+        self.closeButton = closeButton
+
+        moveAvatarToWindow(window)
+
+        UIView.animate(withDuration: Self.avatarAnimationDuration, animations: {
+            self.avatarImageView.frame = Self.createAvatarTargetRect(window: window)
+            self.avatarImageView.layer.cornerRadius = 0
+            overlay.alpha = 1
+        }, completion: { _ in
+            UIView.animate(withDuration: Self.closeButtonAnimationDuration) {
+                closeButton.alpha = 1
+            }
+        })
+
+        window.bringSubviewToFront(avatarImageView)
+        window.bringSubviewToFront(closeButton)
+    }
+
+    private func moveAvatarToWindow(_ window: UIWindow) {
+        let avatarFrameInWindow = convert(avatarImageView.frame, to: window)
+        avatarImageView.removeFromSuperview()
+        avatarImageView.translatesAutoresizingMaskIntoConstraints = true
+        window.addSubview(avatarImageView)
+        avatarImageView.frame = avatarFrameInWindow
+    }
+
+    private func closeTapped() {
+        guard isAvatarExpanded, let originalAvatarFrame, let window else { return }
+
+        UIView.animate(withDuration: Self.closeButtonAnimationDuration, animations: {
+            self.closeButton?.alpha = 0
+        }, completion: { _ in
+            UIView.animate(withDuration: Self.avatarAnimationDuration, animations: {
+                self.avatarImageView.frame = self.convert(originalAvatarFrame, to: window)
+                self.avatarImageView.layer.cornerRadius = Self.avatarCornerRadius
+                self.overlayView?.alpha = 0
+            }, completion: { _ in
+                self.avatarImageView.removeFromSuperview()
+                self.addSubview(self.avatarImageView)
+                self.avatarImageView.frame = originalAvatarFrame
+                self.setupAvatarImageView()
+
+                self.overlayView?.removeFromSuperview()
+                self.closeButton?.removeFromSuperview()
+                self.isAvatarExpanded = false
+            })
+        })
     }
 }
