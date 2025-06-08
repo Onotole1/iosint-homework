@@ -11,7 +11,15 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Data
 
-    private let data = GetPosts.fetch()
+    private let data: [ProfileViewModelItem] = {
+        let images = GetPhotos.shared.getImages().take(4)
+        let photosViewModelItems: [PhotosViewModelItem] = [PhotosViewModelItem(images: images)]
+
+        let posts = GetPosts.fetch()
+        let postViewModels = posts.map(PostViewModelItem.fromPost)
+
+        return photosViewModelItems + postViewModels
+    }()
 
     // MARK: - Subviews
 
@@ -27,12 +35,6 @@ class ProfileViewController: UIViewController {
         UIView()
     }()
 
-    // MARK: - Cell Ids
-
-    private enum CellReuseID: String {
-        case post = "PostTableViewCell_ReuseID"
-    }
-
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -41,6 +43,11 @@ class ProfileViewController: UIViewController {
         addSubviews()
         setupConstraints()
         tuneTableView()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         hideNavigationBar()
     }
 
@@ -49,10 +56,8 @@ class ProfileViewController: UIViewController {
     private func tuneTableView() {
         tableView.tableFooterView = tableFooterView
 
-        tableView.register(
-            PostTableViewCell.self,
-            forCellReuseIdentifier: CellReuseID.post.rawValue
-        )
+        tableView.register(PostTableViewCell.self)
+        tableView.register(PhotosTableViewCell.self)
 
         tableView.dataSource = self
         tableView.delegate = self
@@ -80,16 +85,19 @@ extension ProfileViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CellReuseID.post.rawValue,
-            for: indexPath
-        ) as? PostTableViewCell else {
-            fatalError("could not dequeueReusableCell")
+        let item = data[indexPath.row]
+        switch item {
+        case let postItem as PostViewModelItem:
+            let cell: PostTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+            cell.update(postItem)
+            return cell
+        case let photosItem as PhotosViewModelItem:
+            let cell: PhotosTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+            cell.update(images: photosItem.images)
+            return cell
+        default:
+            fatalError("Unknown item type")
         }
-
-        cell.update(data[indexPath.row])
-
-        return cell
     }
 }
 
@@ -99,6 +107,16 @@ extension ProfileViewController: UITableViewDelegate {
             headerView
         } else {
             nil
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = data[indexPath.row]
+        switch item {
+        case _ as PhotosViewModelItem:
+            navigationController?.pushViewController(PhotosViewController(), animated: true)
+        default:
+            break
         }
     }
 }
