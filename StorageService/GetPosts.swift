@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct GetPosts {
-    static func fetch() -> [Post] {
+public struct GetPosts {
+    public static func fetch() -> [Post] {
         [
             Post(
                 author: "Alice Johnson",

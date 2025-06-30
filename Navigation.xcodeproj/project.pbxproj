@@ -6,7 +6,37 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FB6B06522E11ADC90058192A /* StorageService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB6B064A2E11ADC90058192A /* StorageService.framework */; };
+		FB6B06532E11ADC90058192A /* StorageService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FB6B064A2E11ADC90058192A /* StorageService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FB6B06502E11ADC90058192A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FBA34C312DD086F800DF826C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FB6B06492E11ADC90058192A;
+			remoteInfo = StorageService;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FB6B06542E11ADC90058192A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				FB6B06532E11ADC90058192A /* StorageService.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		FB6B064A2E11ADC90058192A /* StorageService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StorageService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBA34C392DD086F800DF826C /* Navigation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -21,6 +51,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		FB6B064B2E11ADC90058192A /* StorageService */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = StorageService;
+			sourceTree = "<group>";
+		};
 		FBA34C3B2DD086F800DF826C /* Navigation */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -32,10 +67,18 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		FB6B06472E11ADC90058192A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FBA34C362DD086F800DF826C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB6B06522E11ADC90058192A /* StorageService.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				FBA34C3B2DD086F800DF826C /* Navigation */,
+				FB6B064B2E11ADC90058192A /* StorageService */,
 				FBA34C3A2DD086F800DF826C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,13 +98,47 @@
 			isa = PBXGroup;
 			children = (
 				FBA34C392DD086F800DF826C /* Navigation.app */,
+				FB6B064A2E11ADC90058192A /* StorageService.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		FB6B06452E11ADC90058192A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		FB6B06492E11ADC90058192A /* StorageService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FB6B06572E11ADC90058192A /* Build configuration list for PBXNativeTarget "StorageService" */;
+			buildPhases = (
+				FB6B06452E11ADC90058192A /* Headers */,
+				FB6B06462E11ADC90058192A /* Sources */,
+				FB6B06472E11ADC90058192A /* Frameworks */,
+				FB6B06482E11ADC90058192A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				FB6B064B2E11ADC90058192A /* StorageService */,
+			);
+			name = StorageService;
+			packageProductDependencies = (
+			);
+			productName = StorageService;
+			productReference = FB6B064A2E11ADC90058192A /* StorageService.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		FBA34C382DD086F800DF826C /* Navigation */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FBA34C4C2DD086F900DF826C /* Build configuration list for PBXNativeTarget "Navigation" */;
@@ -69,10 +147,12 @@
 				FBC2911B2DDDB2E700A9ED7C /* SwiftLint */,
 				FBA34C362DD086F800DF826C /* Frameworks */,
 				FBA34C372DD086F800DF826C /* Resources */,
+				FB6B06542E11ADC90058192A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FB6B06512E11ADC90058192A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				FBA34C3B2DD086F800DF826C /* Navigation */,
@@ -91,9 +171,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					FB6B06492E11ADC90058192A = {
+						CreatedOnToolsVersion = 16.3;
+					};
 					FBA34C382DD086F800DF826C = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -117,11 +200,19 @@
 			projectRoot = "";
 			targets = (
 				FBA34C382DD086F800DF826C /* Navigation */,
+				FB6B06492E11ADC90058192A /* StorageService */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		FB6B06482E11ADC90058192A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FBA34C372DD086F800DF826C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -153,6 +244,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		FB6B06462E11ADC90058192A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FBA34C352DD086F800DF826C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -162,7 +260,85 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		FB6B06512E11ADC90058192A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FB6B06492E11ADC90058192A /* StorageService */;
+			targetProxy = FB6B06502E11ADC90058192A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		FB6B06552E11ADC90058192A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = ru.netology.StorageService;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_MODULE = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		FB6B06562E11ADC90058192A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = ru.netology.StorageService;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_MODULE = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		FBA34C4D2DD086F900DF826C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -349,6 +525,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		FB6B06572E11ADC90058192A /* Build configuration list for PBXNativeTarget "StorageService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FB6B06552E11ADC90058192A /* Debug */,
+				FB6B06562E11ADC90058192A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		FBA34C342DD086F800DF826C /* Build configuration list for PBXProject "Navigation" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

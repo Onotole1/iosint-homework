@@ -4,6 +4,7 @@
 //
 //  Created by Анатолий Спитченко on 01.06.2025.
 //
+import StorageService
 
 struct PostViewModelItem: ProfileViewModelItem {
     static func fromPost(_ post: Post) -> PostViewModelItem {
