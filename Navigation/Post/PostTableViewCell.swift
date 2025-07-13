@@ -7,8 +7,11 @@
 
 import UIKit
 import SnapKit
+import iOSIntPackage
 
 class PostTableViewCell: UITableViewCell {
+
+    private let imageProcessor = ImageProcessor()
 
     // MARK: - Subviews
 
@@ -38,13 +41,9 @@ class PostTableViewCell: UITableViewCell {
         return label
     }()
 
-    private lazy var likesLabel: UILabel = {
-        createCounterLabel()
-    }()
+    private lazy var likesLabel: UILabel = createCounterLabel()
 
-    private lazy var viewsLabel: UILabel = {
-        createCounterLabel()
-    }()
+    private lazy var viewsLabel: UILabel = createCounterLabel()
 
     private func createCounterLabel() -> UILabel {
         let label = UILabel()
@@ -89,7 +88,7 @@ class PostTableViewCell: UITableViewCell {
     }
 
     private func addSubviews() {
-        [authorLabel, photoImageView, descriptionLabel, likesLabel, viewsLabel].forEach { contentView.addSubview($0) }
+        [authorLabel, photoImageView, descriptionLabel, likesLabel, viewsLabel].forEach(contentView.addSubview)
     }
 
     private func setupConstraints() {
@@ -131,7 +130,15 @@ class PostTableViewCell: UITableViewCell {
 
     func update(_ model: PostViewModelItem) {
         authorLabel.text = model.author
-        photoImageView.image = UIImage(named: model.image)
+        let originalImage = UIImage(named: model.image)!
+        imageProcessor.processImageAsync(
+            sourceImage: originalImage,
+            filter: ColorFilter.monochrome(color: CIColor.red, intensity: 0.5),
+        ) { processedImage in
+            DispatchQueue.main.async {
+                self.photoImageView.image = processedImage.map { UIImage(cgImage: $0) } ?? originalImage
+            }
+        }
         descriptionLabel.text = model.description
         likesLabel.text = "Likes: \(model.likes)"
         viewsLabel.text = "Views: \(model.views)"

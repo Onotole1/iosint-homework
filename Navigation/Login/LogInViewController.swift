@@ -137,7 +137,6 @@ class LogInViewController: UIViewController {
         let imageViewVerticalSpacing: CGFloat = 150
         let logoSize: CGFloat = 100
 
-        // logoImageView
         logoImageView.snp.makeConstraints { make in
             make.width.equalTo(logoSize)
             make.height.equalTo(logoSize)
@@ -145,7 +144,6 @@ class LogInViewController: UIViewController {
             make.centerX.equalTo(view.snp.centerX)
         }
 
-        // scrollView
         scrollView.snp.makeConstraints { make in
             make.leading.equalTo(safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(safeAreaLayoutGuide.snp.trailing)
@@ -153,7 +151,6 @@ class LogInViewController: UIViewController {
             make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
         }
 
-        // contentView
         contentView.snp.makeConstraints { make in
             make.leading.equalTo(scrollView.snp.leading)
             make.width.equalTo(scrollView.snp.width)
@@ -163,7 +160,6 @@ class LogInViewController: UIViewController {
             make.bottom.equalTo(logInButton.snp.bottom).offset(16)
         }
 
-        // fieldsStackView
         fieldsStackView.snp.makeConstraints { make in
             make.top.equalTo(logoImageView.snp.bottom).offset(imageViewVerticalSpacing)
             make.leading.equalTo(contentView.snp.leading).offset(Self.commonSpacing)
@@ -171,7 +167,6 @@ class LogInViewController: UIViewController {
             make.height.equalTo(100)
         }
 
-        // logInButton
         logInButton.snp.makeConstraints { make in
             make.height.equalTo(50)
             make.top.equalTo(fieldsStackView.snp.bottom).offset(Self.commonSpacing)
