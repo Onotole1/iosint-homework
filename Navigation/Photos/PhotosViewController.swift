@@ -47,13 +47,11 @@ class PhotosViewController: UIViewController {
 
         view.addSubview(collectionView)
 
-        collectionView.setupConstraints {
-            [
-                $0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-                $0.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-                $0.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-                $0.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            ]
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
+            make.leading.equalTo(safeAreaLayoutGuide.snp.leading)
+            make.trailing.equalTo(safeAreaLayoutGuide.snp.trailing)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
         }
     }
 }

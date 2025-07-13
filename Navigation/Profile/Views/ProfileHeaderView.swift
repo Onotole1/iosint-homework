@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class ProfileHeaderView: UIView {
     // MARK: - Константы
@@ -32,18 +33,16 @@ class ProfileHeaderView: UIView {
         closeButton.isUserInteractionEnabled = true
         closeButton.alpha = 0
         window.addSubview(closeButton)
+
         let closeButtonSize = 44.0
-        closeButton.setupConstraints {
-            [
-                $0.topAnchor.constraint(equalTo: window.safeAreaLayoutGuide.topAnchor, constant: commonSpacing),
-                $0.trailingAnchor.constraint(
-                    equalTo: window.safeAreaLayoutGuide.trailingAnchor,
-                    constant: -commonSpacing,
-                ),
-                $0.widthAnchor.constraint(equalToConstant: closeButtonSize),
-                $0.heightAnchor.constraint(equalToConstant: closeButtonSize),
-            ]
+
+        closeButton.snp.makeConstraints { make in
+            make.top.equalTo(window.safeAreaLayoutGuide.snp.top).offset(commonSpacing)
+            make.trailing.equalTo(window.safeAreaLayoutGuide.snp.trailing).offset(-commonSpacing)
+            make.width.equalTo(closeButtonSize)
+            make.height.equalTo(closeButtonSize)
         }
+
         return closeButton
     }
 
@@ -164,54 +163,46 @@ class ProfileHeaderView: UIView {
     }
 
     private func setupStatusTextField() {
-        statusTextField.setupConstraints {
-            [
-                $0.leadingAnchor.constraint(equalTo: statusLabel.leadingAnchor),
-                $0.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 8),
-                $0.trailingAnchor
-                    .constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Self.commonSpacing),
-                $0.heightAnchor.constraint(equalToConstant: 40),
-            ]
+        statusTextField.snp.makeConstraints { make in
+            make.leading.equalTo(statusLabel.snp.leading)
+            make.top.equalTo(statusLabel.snp.bottom).offset(8)
+            make.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).offset(-Self.commonSpacing)
+            make.height.equalTo(40)
         }
-        .on(.editingChanged) { [weak self] (textField: UITextField) in
+
+        statusTextField.on(.editingChanged) { [weak self] (textField: UITextField) in
             self?.statusText = textField.text ?? ""
         }
     }
 
     private func setupSetStatusButton() {
-        setStatusButton.setupConstraints {
-            [
-                $0.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Self.commonSpacing),
-                $0.trailingAnchor
-                    .constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Self.commonSpacing),
-                $0.topAnchor.constraint(equalTo: statusTextField.bottomAnchor, constant: Self.commonSpacing),
-                $0.heightAnchor.constraint(equalToConstant: 50),
-                $0.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            ]
+        setStatusButton.snp.makeConstraints { make in
+            make.leading.equalTo(safeAreaLayoutGuide.snp.leading).offset(Self.commonSpacing)
+            make.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).offset(-Self.commonSpacing)
+            make.top.equalTo(statusTextField.snp.bottom).offset(Self.commonSpacing)
+            make.height.equalTo(50)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
         }
-        .on(.touchUpInside) { [weak self] _ in
+
+        setStatusButton.on(.touchUpInside) { [weak self] _ in
             guard let self else { return }
             self.statusLabel.text = self.statusText
         }
     }
 
     private func setupFullNameLabel() {
-        fullNameLabel.setupConstraints {
-            [
-                $0.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-                $0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 27),
-            ]
+        fullNameLabel.snp.makeConstraints { make in
+            make.centerX.equalTo(safeAreaLayoutGuide.snp.centerX)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(27)
         }
     }
 
     private func setupAvatarImageView() {
-        avatarImageView.setupConstraints {
-            [
-                $0.widthAnchor.constraint(equalToConstant: Self.avatarSize),
-                $0.heightAnchor.constraint(equalToConstant: Self.avatarSize),
-                $0.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Self.commonSpacing),
-                $0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Self.commonSpacing),
-            ]
+        avatarImageView.snp.makeConstraints { make in
+            make.width.equalTo(Self.avatarSize)
+            make.height.equalTo(Self.avatarSize)
+            make.leading.equalTo(safeAreaLayoutGuide.snp.leading).offset(Self.commonSpacing)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(Self.commonSpacing)
         }
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(avatarTapped))
@@ -219,11 +210,9 @@ class ProfileHeaderView: UIView {
     }
 
     private func setupStatusLabel() {
-        statusLabel.setupConstraints {
-            [
-                $0.leadingAnchor.constraint(equalTo: fullNameLabel.leadingAnchor),
-                $0.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 34),
-            ]
+        statusLabel.snp.makeConstraints { make in
+            make.leading.equalTo(fullNameLabel.snp.leading)
+            make.top.equalTo(fullNameLabel.snp.bottom).offset(34)
         }
     }
 

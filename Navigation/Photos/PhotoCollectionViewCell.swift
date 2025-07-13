@@ -28,13 +28,11 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     private func setupView() {
         contentView.addSubview(imageView)
 
-        imageView.setupConstraints {
-            [
-                $0.topAnchor.constraint(equalTo: contentView.topAnchor),
-                $0.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-                $0.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-                $0.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            ]
+        imageView.snp.makeConstraints { make in
+            make.top.equalTo(contentView.snp.top)
+            make.leading.equalTo(contentView.snp.leading)
+            make.trailing.equalTo(contentView.snp.trailing)
+            make.bottom.equalTo(contentView.snp.bottom)
         }
     }
 

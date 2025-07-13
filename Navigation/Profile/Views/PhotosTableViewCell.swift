@@ -89,28 +89,23 @@ class PhotosTableViewCell: UITableViewCell {
 
     private func setupConstraints() {
         let commonSpacing: CGFloat = 12
-        title.setupConstraints {
-            [
-                $0.leadingAnchor.constraint(equalTo: leadingAnchor, constant: commonSpacing),
-                $0.topAnchor.constraint(equalTo: topAnchor, constant: commonSpacing),
-            ]
+        title.snp.makeConstraints { make in
+            make.leading.equalTo(self.snp.leading).offset(commonSpacing)
+            make.top.equalTo(self.snp.top).offset(commonSpacing)
         }
 
-        navigateIcon.setupConstraints {
-            [
-                $0.centerYAnchor.constraint(equalTo: title.centerYAnchor),
-                $0.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -commonSpacing),
-            ]
+        navigateIcon.snp.makeConstraints { make in
+            make.centerY.equalTo(title.snp.centerY)
+            make.trailing.equalTo(self.snp.trailing).offset(-commonSpacing)
         }
 
-        stackView.setupConstraints {
-            [
-                $0.topAnchor.constraint(equalTo: title.bottomAnchor, constant: commonSpacing),
-                $0.leadingAnchor.constraint(equalTo: leadingAnchor, constant: commonSpacing),
-                $0.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -commonSpacing),
-                $0.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -commonSpacing),
-                $0.heightAnchor.constraint(equalToConstant: 72),
-            ]
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(title.snp.bottom).offset(commonSpacing)
+            make.leading.equalTo(self.snp.leading).offset(commonSpacing)
+            make.trailing.equalTo(self.snp.trailing).offset(-commonSpacing)
+            make.bottom.equalTo(self.snp.bottom).offset(-commonSpacing)
+            make.height.equalTo(72)
         }
+
     }
 }
