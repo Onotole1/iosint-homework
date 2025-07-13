@@ -40,11 +40,9 @@ class FeedViewController: UIViewController {
 
         view.addSubview(stackView)
 
-        stackView.setupConstraints {
-            [
-                $0.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                $0.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            ]
+        stackView.snp.makeConstraints { make in
+            make.centerX.equalTo(view.snp.centerX)
+            make.centerY.equalTo(view.snp.centerY)
         }
     }
 }

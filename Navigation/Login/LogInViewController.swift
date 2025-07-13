@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class LogInViewController: UIViewController {
     // MARK: - Константы
@@ -134,54 +135,45 @@ class LogInViewController: UIViewController {
 
     private func setupViews() {
         let imageViewVerticalSpacing: CGFloat = 150
-        logoImageView.setupConstraints {
-            let logoSize: CGFloat = 100
-            return [
-                $0.widthAnchor.constraint(equalToConstant: logoSize),
-                $0.heightAnchor.constraint(equalToConstant: logoSize),
-                $0.topAnchor.constraint(equalTo: contentView.topAnchor, constant: imageViewVerticalSpacing),
-                $0.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            ]
+        let logoSize: CGFloat = 100
+
+        logoImageView.snp.makeConstraints { make in
+            make.width.equalTo(logoSize)
+            make.height.equalTo(logoSize)
+            make.top.equalTo(contentView.snp.top).offset(imageViewVerticalSpacing)
+            make.centerX.equalTo(view.snp.centerX)
         }
 
-        scrollView.setupConstraints {
-            [
-                $0.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-                $0.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-                $0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-                $0.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            ]
+        scrollView.snp.makeConstraints { make in
+            make.leading.equalTo(safeAreaLayoutGuide.snp.leading)
+            make.trailing.equalTo(safeAreaLayoutGuide.snp.trailing)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
         }
 
-        contentView.setupConstraints {
-            [
-                $0.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-                $0.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-                $0.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-                $0.topAnchor.constraint(equalTo: scrollView.topAnchor),
-                $0.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-                $0.bottomAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 16),
-            ]
+        contentView.snp.makeConstraints { make in
+            make.leading.equalTo(scrollView.snp.leading)
+            make.width.equalTo(scrollView.snp.width)
+            make.trailing.equalTo(scrollView.snp.trailing)
+            make.top.equalTo(scrollView.snp.top)
+            make.bottom.equalTo(scrollView.snp.bottom)
+            make.bottom.equalTo(logInButton.snp.bottom).offset(16)
         }
 
-        fieldsStackView.setupConstraints {
-            [
-                $0.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: imageViewVerticalSpacing),
-                $0.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Self.commonSpacing),
-                $0.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Self.commonSpacing),
-                $0.heightAnchor.constraint(equalToConstant: 100),
-            ]
+        fieldsStackView.snp.makeConstraints { make in
+            make.top.equalTo(logoImageView.snp.bottom).offset(imageViewVerticalSpacing)
+            make.leading.equalTo(contentView.snp.leading).offset(Self.commonSpacing)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-Self.commonSpacing)
+            make.height.equalTo(100)
         }
 
-        logInButton.setupConstraints {
-            [
-                $0.heightAnchor.constraint(equalToConstant: 50),
-                $0.topAnchor.constraint(equalTo: fieldsStackView.bottomAnchor, constant: Self.commonSpacing),
-                $0.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Self.commonSpacing),
-                $0.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Self.commonSpacing),
-            ]
+        logInButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.top.equalTo(fieldsStackView.snp.bottom).offset(Self.commonSpacing)
+            make.leading.equalTo(contentView.snp.leading).offset(Self.commonSpacing)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-Self.commonSpacing)
         }
-        .on(.touchUpInside) { [weak self] _ in
+        logInButton.on(.touchUpInside) { [weak self] _ in
             self?.navigateToMain()
         }
     }

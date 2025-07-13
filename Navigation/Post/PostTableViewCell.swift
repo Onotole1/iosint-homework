@@ -6,8 +6,12 @@
 //
 
 import UIKit
+import SnapKit
+import iOSIntPackage
 
 class PostTableViewCell: UITableViewCell {
+
+    private let imageProcessor = ImageProcessor()
 
     // MARK: - Subviews
 
@@ -37,13 +41,9 @@ class PostTableViewCell: UITableViewCell {
         return label
     }()
 
-    private lazy var likesLabel: UILabel = {
-        createCounterLabel()
-    }()
+    private lazy var likesLabel: UILabel = createCounterLabel()
 
-    private lazy var viewsLabel: UILabel = {
-        createCounterLabel()
-    }()
+    private lazy var viewsLabel: UILabel = createCounterLabel()
 
     private func createCounterLabel() -> UILabel {
         let label = UILabel()
@@ -88,51 +88,41 @@ class PostTableViewCell: UITableViewCell {
     }
 
     private func addSubviews() {
-        [authorLabel, photoImageView, descriptionLabel, likesLabel, viewsLabel].forEach { contentView.addSubview($0) }
+        [authorLabel, photoImageView, descriptionLabel, likesLabel, viewsLabel].forEach(contentView.addSubview)
     }
 
     private func setupConstraints() {
         let commonSpacing = 16.0
 
-        authorLabel.setupConstraints {
-            [
-                $0.topAnchor.constraint(equalTo: contentView.topAnchor, constant: commonSpacing),
-                $0.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: commonSpacing),
-                $0.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: commonSpacing),
-            ]
+        authorLabel.snp.makeConstraints { make in
+            make.top.equalTo(contentView.snp.top).offset(commonSpacing)
+            make.leading.equalTo(contentView.snp.leading).offset(commonSpacing)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-commonSpacing)
         }
 
-        photoImageView.setupConstraints {
-            [
-                $0.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: commonSpacing),
-                $0.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-                $0.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-                $0.heightAnchor.constraint(equalTo: photoImageView.widthAnchor),
-            ]
+        photoImageView.snp.makeConstraints { make in
+            make.top.equalTo(authorLabel.snp.bottom).offset(commonSpacing)
+            make.leading.equalTo(contentView.snp.leading)
+            make.trailing.equalTo(contentView.snp.trailing)
+            make.height.equalTo(photoImageView.snp.width)
         }
 
-        descriptionLabel.setupConstraints {
-            [
-                $0.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: commonSpacing),
-                $0.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: commonSpacing),
-                $0.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -commonSpacing),
-            ]
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(photoImageView.snp.bottom).offset(commonSpacing)
+            make.leading.equalTo(contentView.snp.leading).offset(commonSpacing)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-commonSpacing)
         }
 
-        likesLabel.setupConstraints {
-            [
-                $0.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: commonSpacing),
-                $0.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: commonSpacing),
-                $0.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -commonSpacing),
-            ]
+        likesLabel.snp.makeConstraints { make in
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(commonSpacing)
+            make.leading.equalTo(contentView.snp.leading).offset(commonSpacing)
+            make.bottom.equalTo(contentView.snp.bottom).offset(-commonSpacing)
         }
 
-        viewsLabel.setupConstraints {
-            [
-                $0.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: commonSpacing),
-                $0.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -commonSpacing),
-                $0.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -commonSpacing),
-            ]
+        viewsLabel.snp.makeConstraints { make in
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(commonSpacing)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-commonSpacing)
+            make.bottom.equalTo(contentView.snp.bottom).offset(-commonSpacing)
         }
     }
 
@@ -140,7 +130,15 @@ class PostTableViewCell: UITableViewCell {
 
     func update(_ model: PostViewModelItem) {
         authorLabel.text = model.author
-        photoImageView.image = UIImage(named: model.image)
+        let originalImage = UIImage(named: model.image)!
+        imageProcessor.processImageAsync(
+            sourceImage: originalImage,
+            filter: ColorFilter.monochrome(color: CIColor.red, intensity: 0.5),
+        ) { processedImage in
+            DispatchQueue.main.async {
+                self.photoImageView.image = processedImage.map { UIImage(cgImage: $0) } ?? originalImage
+            }
+        }
         descriptionLabel.text = model.description
         likesLabel.text = "Likes: \(model.likes)"
         viewsLabel.text = "Views: \(model.views)"

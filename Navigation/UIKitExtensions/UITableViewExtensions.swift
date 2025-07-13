@@ -1,4 +1,5 @@
 import UIKit
+import SnapKit
 
 extension UITableView {
 
@@ -6,8 +7,8 @@ extension UITableView {
 
     func setAndLayout(headerView: UIView) {
         tableHeaderView = headerView
-        headerView.setupConstraints {
-            [$0.widthAnchor.constraint(equalTo: widthAnchor)]
+        headerView.snp.makeConstraints { make in
+            make.width.equalTo(self.snp.width)
         }
 
         headerView.setNeedsLayout()
