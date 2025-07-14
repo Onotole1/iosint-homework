@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		FB6B06522E11ADC90058192A /* StorageService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB6B064A2E11ADC90058192A /* StorageService.framework */; };
 		FB6B06532E11ADC90058192A /* StorageService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FB6B064A2E11ADC90058192A /* StorageService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FBBB5B1C2E24CFF300FEB6D6 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = FBBB5B1B2E24CFF300FEB6D6 /* Swinject */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB6B06522E11ADC90058192A /* StorageService.framework in Frameworks */,
+				FBBB5B1C2E24CFF300FEB6D6 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,6 +161,7 @@
 			);
 			name = Navigation;
 			packageProductDependencies = (
+				FBBB5B1B2E24CFF300FEB6D6 /* Swinject */,
 			);
 			productName = Navigation;
 			productReference = FBA34C392DD086F800DF826C /* Navigation.app */;
@@ -192,7 +195,8 @@
 			mainGroup = FBA34C302DD086F800DF826C;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				FB9123212DDDABB7004B4501 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
+				FBBB5B1A2E24CFF300FEB6D6 /* XCRemoteSwiftPackageReference "Swinject" */,
+				FBBB5B1D2E24D05D00FEB6D6 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FBA34C3A2DD086F800DF826C /* Products */;
@@ -555,7 +559,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		FB9123212DDDABB7004B4501 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+		FBBB5B1A2E24CFF300FEB6D6 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.1;
+			};
+		};
+		FBBB5B1D2E24D05D00FEB6D6 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
 			requirement = {
@@ -564,6 +576,14 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FBBB5B1B2E24CFF300FEB6D6 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FBBB5B1A2E24CFF300FEB6D6 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FBA34C312DD086F800DF826C /* Project object */;
 }

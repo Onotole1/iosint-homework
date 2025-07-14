@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import Swinject
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    lazy var container: Container = ContainerFactory.makeContainer()
 
     func scene(
         _ scene: UIScene,
@@ -19,8 +21,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
 
         let window = UIWindow(windowScene: scene)
-        window.rootViewController = LogInViewController()
+        container.register(UIWindow.self) { _ in window }
         self.window = window
+        container.resolve(Coordinator.self)!.start()
         window.makeKeyAndVisible()
     }
 
