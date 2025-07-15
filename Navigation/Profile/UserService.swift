@@ -7,11 +7,4 @@
 
 protocol UserService {
     var user: User { get }
-    func auth(login: String) -> User?
-}
-
-extension UserService {
-    func auth(login: String) -> User? {
-        login == user.login ? user : nil
-    }
 }

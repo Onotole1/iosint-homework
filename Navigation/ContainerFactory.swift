@@ -21,6 +21,10 @@ struct ContainerFactory {
         container.register(FeedViewController.self) { resolver in
             FeedViewController(postViewControllerFactory: resolver.resolve(PostViewControllerFactory.self)!)
         }
+        container.register(LoginViewControllerDelegate.self) { resolver in
+            resolver.resolve(LoginFactory.self)!.makeLoginInspector()
+        }.inObjectScope(ObjectScope.container)
+        container.register(LoginFactory.self) { _ in MyLoginFactory() }
         container.register(UserService.self) { _ in
             #if DEBUG
             TestUserService()

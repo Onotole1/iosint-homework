@@ -17,7 +17,10 @@ final class CoordinatorImpl: Coordinator {
 
     func start() {
         let window = container.resolve(UIWindow.self)!
-        window.rootViewController = container.resolve(LogInViewController.self)!
+        let loginDelegate = container.resolve(LoginViewControllerDelegate.self)!
+        let loginViewController = container.resolve(LogInViewController.self)!
+        loginViewController.delegate = loginDelegate
+        window.rootViewController = loginViewController
     }
 
     func showMainScreen() {

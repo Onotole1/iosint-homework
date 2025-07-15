@@ -14,6 +14,10 @@ class LogInViewController: UIViewController {
     private static let commonSpacing: CGFloat = 16
     private static let borderColor: UIColor = .lightGray
 
+    // MARK: - Deleegate
+
+    weak var delegate: LoginViewControllerDelegate?
+
     // MARK: - Внутренние UIView
 
     private lazy var logoImageView: UIImageView = {
@@ -200,7 +204,11 @@ class LogInViewController: UIViewController {
     }
 
     private func onLoginClicked() {
-        if userService.auth(login: emailTextField.text ?? "") != nil {
+        guard let delegate = delegate else { fatalError("Delegate not set") }
+        if delegate.check(
+            login: emailTextField.text ?? "",
+            password: passwordTextField.text ?? "",
+        ) {
             navigateToMain()
         } else {
             showIncorrectCredentialsAlert()
