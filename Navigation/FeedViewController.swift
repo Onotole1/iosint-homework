@@ -28,13 +28,28 @@ class FeedViewController: UIViewController {
         return buttons
     }()
 
+    private let postViewControllerFactory: PostViewControllerFactory
+
+    init(postViewControllerFactory: PostViewControllerFactory) {
+        self.postViewControllerFactory = postViewControllerFactory
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         buttons.forEach { stackView.addArrangedSubview($0) }
         buttons.forEach { (button: UIButton) in
             button.on(.touchUpInside) { [weak self] _ in
-                self?.navigationController?.pushViewController(PostViewController(nil), animated: true)
+                guard let self else { return }
+                self.navigationController?.pushViewController(
+                    self.postViewControllerFactory.create(nil),
+                    animated: true
+                )
             }
         }
 

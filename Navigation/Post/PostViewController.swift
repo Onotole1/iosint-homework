@@ -8,6 +8,16 @@
 import UIKit
 import StorageService
 
+protocol PostViewControllerFactory {
+    func create(_ post: Post?) -> PostViewController
+}
+
+class PostViewControllerFactoryImpl: PostViewControllerFactory {
+    func create(_ post: Post?) -> PostViewController {
+        PostViewController(post)
+    }
+}
+
 class PostViewController: UIViewController {
     private var post: Post?
 

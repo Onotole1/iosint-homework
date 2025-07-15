@@ -68,7 +68,6 @@ class ProfileHeaderView: UIView {
     private lazy var avatarImageView = {
         let imageView = UIImageView()
         imageView.isUserInteractionEnabled = true
-        imageView.image = UIImage(named: "Mura")
         imageView.layer.cornerRadius = Self.avatarCornerRadius
         imageView.layer.borderWidth = 3
         imageView.layer.borderColor = UIColor.white.cgColor
@@ -81,7 +80,7 @@ class ProfileHeaderView: UIView {
         titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
         titleLabel.textColor = .black
         titleLabel.textAlignment = .left
-        titleLabel.text = "Banana Cat"
+        titleLabel.text = ""
         return titleLabel
     }()
 
@@ -104,7 +103,6 @@ class ProfileHeaderView: UIView {
         statusLabel.font = .systemFont(ofSize: 14, weight: .regular)
         statusLabel.textColor = .gray
         statusLabel.textAlignment = .left
-        statusLabel.text = "Hello, world!"
         return statusLabel
     }()
 
@@ -141,6 +139,15 @@ class ProfileHeaderView: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
+    }
+
+    // MARK: - Обновление вьюшек
+    func update(user: User) {
+        statusTextField.text = user.status
+        statusText = user.status
+        statusLabel.text = user.status
+        fullNameLabel.text = user.fullName
+        avatarImageView.image = user.avatar
     }
 
     // MARK: - Настройка вьюшек

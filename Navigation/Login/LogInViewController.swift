@@ -80,6 +80,9 @@ class LogInViewController: UIViewController {
         return scrollView
     }()
 
+    private let coordinator: Coordinator
+    private let userService: UserService
+
     private lazy var contentView: UIView = {
         UIView()
     }()
@@ -99,6 +102,16 @@ class LogInViewController: UIViewController {
     }
 
     // MARK: - Lifecycle
+
+    init(coordinator: Coordinator, userService: UserService) {
+        self.coordinator = coordinator
+        self.userService = userService
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -182,25 +195,30 @@ class LogInViewController: UIViewController {
             ]
         }
         .on(.touchUpInside) { [weak self] _ in
-            self?.navigateToMain()
+            self?.onLoginClicked()
         }
     }
 
+    private func onLoginClicked() {
+        if userService.auth(login: emailTextField.text ?? "") != nil {
+            navigateToMain()
+        } else {
+            showIncorrectCredentialsAlert()
+        }
+    }
+
+    private func showIncorrectCredentialsAlert() {
+        let alertController = UIAlertController(
+            title: "Incorrect credentials",
+            message: "Please try again",
+            preferredStyle: .alert
+        )
+        alertController.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alertController, animated: true)
+    }
+
     private func navigateToMain() {
-        let uitabbarcontroller = UITabBarController()
-
-        let feedViewController = UINavigationController(rootViewController: FeedViewController())
-        feedViewController.tabBarItem.image = UIImage(systemName: "house")
-        feedViewController.tabBarItem.title = "Feed"
-
-        let profileViewController = UINavigationController(rootViewController: ProfileViewController())
-        profileViewController.tabBarItem.image = UIImage(systemName: "person.circle")
-        profileViewController.tabBarItem.title = "Profile"
-
-        uitabbarcontroller.viewControllers = [feedViewController, profileViewController]
-        uitabbarcontroller.selectedIndex = 1
-
-        AppNavigation.resetToNewRootViewController(uitabbarcontroller)
+        coordinator.showMainScreen()
     }
 
     private func hideKeyboardOnTapOutside() {
