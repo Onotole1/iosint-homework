@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FB6A8AC22E294AF5006A84A4 /* iOSIntPackage in Frameworks */ = {isa = PBXBuildFile; productRef = FB6A8AC12E294AF5006A84A4 /* iOSIntPackage */; };
 		FB6B06522E11ADC90058192A /* StorageService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB6B064A2E11ADC90058192A /* StorageService.framework */; };
 		FB6B06532E11ADC90058192A /* StorageService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FB6B064A2E11ADC90058192A /* StorageService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FBBB5B1C2E24CFF300FEB6D6 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = FBBB5B1B2E24CFF300FEB6D6 /* Swinject */; };
@@ -79,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB6A8AC22E294AF5006A84A4 /* iOSIntPackage in Frameworks */,
 				FB6B06522E11ADC90058192A /* StorageService.framework in Frameworks */,
 				FBBB5B1C2E24CFF300FEB6D6 /* Swinject in Frameworks */,
 			);
@@ -162,6 +164,7 @@
 			name = Navigation;
 			packageProductDependencies = (
 				FBBB5B1B2E24CFF300FEB6D6 /* Swinject */,
+				FB6A8AC12E294AF5006A84A4 /* iOSIntPackage */,
 			);
 			productName = Navigation;
 			productReference = FBA34C392DD086F800DF826C /* Navigation.app */;
@@ -197,6 +200,7 @@
 			packageReferences = (
 				FBBB5B1A2E24CFF300FEB6D6 /* XCRemoteSwiftPackageReference "Swinject" */,
 				FBBB5B1D2E24D05D00FEB6D6 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
+				FB6A8AC02E294AF5006A84A4 /* XCRemoteSwiftPackageReference "iOSIntPackage" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FBA34C3A2DD086F800DF826C /* Products */;
@@ -559,6 +563,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		FB6A8AC02E294AF5006A84A4 /* XCRemoteSwiftPackageReference "iOSIntPackage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TrueMax/iOSIntPackage";
+			requirement = {
+				branch = imagepublisher;
+				kind = branch;
+			};
+		};
 		FBBB5B1A2E24CFF300FEB6D6 /* XCRemoteSwiftPackageReference "Swinject" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Swinject/Swinject";
@@ -578,6 +590,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		FB6A8AC12E294AF5006A84A4 /* iOSIntPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB6A8AC02E294AF5006A84A4 /* XCRemoteSwiftPackageReference "iOSIntPackage" */;
+			productName = iOSIntPackage;
+		};
 		FBBB5B1B2E24CFF300FEB6D6 /* Swinject */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FBBB5B1A2E24CFF300FEB6D6 /* XCRemoteSwiftPackageReference "Swinject" */;
