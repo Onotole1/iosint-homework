@@ -12,9 +12,13 @@ class InfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let alertButton = UIButton(type: .system)
+        let alertButton = CustomButton.make(
+            buttonType: .system,
+            title: "Alert",
+        ) { [weak self] in
+            self?.didTapAlertButton()
+        }
         alertButton.setTitle("Alert", for: .normal)
-        alertButton.addTarget(self, action: #selector(didTapAlertButton), for: .touchUpInside)
         alertButton.translatesAutoresizingMaskIntoConstraints = false
 
         view.backgroundColor = .systemBackground
@@ -26,7 +30,7 @@ class InfoViewController: UIViewController {
         ])
     }
 
-    @objc func didTapAlertButton() {
+    private func didTapAlertButton() {
         let alert = UIAlertController(title: "Additional info", message: "Very long text", preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in

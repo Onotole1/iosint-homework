@@ -85,8 +85,14 @@ class ProfileHeaderView: UIView {
     }()
 
     private lazy var setStatusButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setTitleColor(.white, for: .normal)
+        let button = CustomButton.make(
+            buttonType: .custom,
+            title: "Set status",
+            titleColor: .white
+        ) { [weak self] in
+            guard let self else { return }
+            self.statusLabel.text = self.statusText
+        }
         button.backgroundColor = UIColor.systemBlue
         button.layer.cornerRadius = 4
         button.layer.shadowColor = UIColor.black.cgColor
@@ -94,7 +100,6 @@ class ProfileHeaderView: UIView {
         button.layer.shadowOffset = CGSize(width: 4, height: 4)
         button.layer.shadowRadius = 4
         button.layer.masksToBounds = false
-        button.setTitle("Set status", for: .normal)
         return button
     }()
 
@@ -195,10 +200,6 @@ class ProfileHeaderView: UIView {
                 $0.heightAnchor.constraint(equalToConstant: 50),
                 $0.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             ]
-        }
-        .on(.touchUpInside) { [weak self] _ in
-            guard let self else { return }
-            self.statusLabel.text = self.statusText
         }
     }
 
