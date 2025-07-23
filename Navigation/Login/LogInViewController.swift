@@ -59,10 +59,13 @@ class LogInViewController: UIViewController {
     }()
 
     private lazy var logInButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setTitleColor(.white, for: .normal)
-        button.setTitle("Log In", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        let button = CustomButton.make(
+            buttonType: .custom,
+            title: "Log In",
+            titleColor: .white
+        ) { [weak self] in
+            self?.onLoginClicked()
+        }
         let bluePixel = UIImage.init(named: "BluePixel")!
         let bluePixelSemiTransparent = bluePixel.withAlpha(0.8)
         button.setBackgroundImage(bluePixel, for: .normal)
@@ -197,9 +200,6 @@ class LogInViewController: UIViewController {
                 $0.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Self.commonSpacing),
                 $0.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Self.commonSpacing),
             ]
-        }
-        .on(.touchUpInside) { [weak self] _ in
-            self?.onLoginClicked()
         }
     }
 

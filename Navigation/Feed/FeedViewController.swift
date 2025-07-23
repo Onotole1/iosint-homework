@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 class FeedViewController: UIViewController {
 
@@ -28,10 +29,40 @@ class FeedViewController: UIViewController {
         return buttons
     }()
 
+    private lazy var guessTextField: UITextField = {
+        let textField = UITextField()
+
+        textField.placeholder = "Guess word"
+
+        return textField
+    }()
+
+    private lazy var resultLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.text = "Result"
+        return label
+    }()
+
+    private lazy var checkGuessButton: UIButton = {
+        CustomButton.make(buttonType: .system, title: "Check") { [weak self] in
+            guard let self else { return }
+            feedModel.check(word: guessTextField.text ?? "")
+        }
+    }()
+
+    private var cancellables = Set<AnyCancellable>()
+
     private let postViewControllerFactory: PostViewControllerFactory
 
-    init(postViewControllerFactory: PostViewControllerFactory) {
+    private let feedModel: FeedModel
+
+    init(
+        postViewControllerFactory: PostViewControllerFactory,
+        feedModel: FeedModel,
+    ) {
         self.postViewControllerFactory = postViewControllerFactory
+        self.feedModel = feedModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -42,7 +73,12 @@ class FeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        buttons.forEach { stackView.addArrangedSubview($0) }
+        setupView()
+        subscribeToModel()
+    }
+
+    private func setupView() {
+        buttons.forEach(stackView.addArrangedSubview)
         buttons.forEach { (button: UIButton) in
             button.on(.touchUpInside) { [weak self] _ in
                 guard let self else { return }
@@ -53,6 +89,8 @@ class FeedViewController: UIViewController {
             }
         }
 
+        [guessTextField, checkGuessButton, resultLabel].forEach(stackView.addArrangedSubview)
+
         view.addSubview(stackView)
 
         stackView.setupConstraints {
@@ -61,5 +99,17 @@ class FeedViewController: UIViewController {
                 $0.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             ]
         }
+    }
+
+    private func subscribeToModel() {
+        feedModel.checkWordResult.sink { [weak self] result in
+            switch result {
+            case .correct:
+                self?.resultLabel.textColor = .green
+            case .incorrect:
+                self?.resultLabel.textColor = .red
+            }
+        }
+        .store(in: &cancellables)
     }
 }
