@@ -6,14 +6,15 @@
 //
 
 import UIKit
+import iOSIntPackage
 
 class PhotosViewController: UIViewController {
     private static let rowCount = 3.0
     private static let offset = 8.0
 
-    private let images = GetPhotos.shared.getImages().map {
-        PhotoViewModelItem(image: $0)
-    }
+    private var images: [PhotoViewModelItem] = []
+
+    private let imagePublisherFacade = ImagePublisherFacade()
 
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -34,6 +35,24 @@ class PhotosViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setupNavigationBar()
         setupCollectionView()
+        addImages()
+    }
+
+    private func addImages() {
+        let allImages = GetPhotos.shared.getImages()
+        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: allImages.count, userImages: allImages)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        imagePublisherFacade.subscribe(self)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        imagePublisherFacade.removeSubscription(for: self)
     }
 
     private func setupNavigationBar() {
@@ -89,5 +108,17 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
         let availableWidth = collectionView.frame.width - padding - spacing
         let itemWidth = availableWidth / Self.rowCount
         return CGSize(width: itemWidth, height: itemWidth)
+    }
+}
+
+extension PhotosViewController: ImageLibrarySubscriber {
+    func receive(images: [UIImage]) {
+        self.images = images.map {
+            PhotoViewModelItem(image: $0)
+        }
+        self.collectionView.reloadData()
+
+        let item = IndexPath(item: images.count - 1, section: 0)
+        collectionView.scrollToItem(at: item, at: .bottom, animated: true)
     }
 }
