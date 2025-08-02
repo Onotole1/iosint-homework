@@ -36,7 +36,10 @@ struct ContainerFactory {
             CurrentUserService()
             #endif
         }
-        container.register(ProfileViewControllerFactory.self) { _ in ProfileViewControllerFactoryImpl() }
+        container.register(ProfileViewOutputFactory.self) { _ in ProfileViewModelFactory() }
+        container.register(ProfileViewControllerFactory.self) { resolver in
+            ProfileViewControllerFactoryImpl(profileViewOutputFactory: resolver.resolve(ProfileViewOutputFactory.self)!)
+        }
         return container
     }
 }
