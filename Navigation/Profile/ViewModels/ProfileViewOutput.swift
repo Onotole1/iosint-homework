@@ -8,4 +8,5 @@ import Combine
 
 protocol ProfileViewOutput {
     var config: AnyPublisher<ProfileViewConfig, Never> { get }
+    var onSetStatusAction: ((String) -> Void) { get }
 }

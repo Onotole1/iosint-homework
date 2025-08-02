@@ -93,6 +93,10 @@ class ProfileViewController: UIViewController {
             tableView.reloadData()
         }
         .store(in: &cancellables)
+
+        headerView.onStatusSet = { [weak self] status in
+            self?.viewOutput.onSetStatusAction(status)
+        }
     }
 
     private func tuneTableView() {

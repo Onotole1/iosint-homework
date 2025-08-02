@@ -24,6 +24,13 @@ class ProfileViewModel: ProfileViewOutput {
         $_config.eraseToAnyPublisher()
     }
 
+    var onSetStatusAction: (String) -> Void {
+        { [weak self] status in
+            guard let self else { return }
+            _config = _config.updateStatus(status)
+        }
+    }
+
     init(user: User) {
         self._config = Self.createConfig(user: user)
     }
