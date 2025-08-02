@@ -11,4 +11,8 @@ struct User {
     let fullName: String
     let avatar: UIImage
     let status: String
+
+    func updateStatus(_ newStatus: String) -> User {
+        User(login: login, fullName: fullName, avatar: avatar, status: newStatus)
+    }
 }
