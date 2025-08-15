@@ -6,40 +6,40 @@
 //
 
 import UIKit
-import StorageService
+import Combine
 
 protocol ProfileViewControllerFactory {
     func create(user: User) -> ProfileViewController
 }
 
 class ProfileViewControllerFactoryImpl: ProfileViewControllerFactory {
+    private let profileViewOutputFactory: ProfileViewOutputFactory
+
+    init(profileViewOutputFactory: ProfileViewOutputFactory) {
+        self.profileViewOutputFactory = profileViewOutputFactory
+    }
+
     func create(user: User) -> ProfileViewController {
-        ProfileViewController(user)
+        ProfileViewController(profileViewOutputFactory.makeOutput(user: user))
     }
 }
 
 class ProfileViewController: UIViewController {
 
+    private var cancellables: Set<AnyCancellable> = []
+
     // MARK: - Data
+    private var items: [ProfileViewModelItem] = []
 
-    private let data: [ProfileViewModelItem] = {
-        let images = GetPhotos.shared.getImages().take(4)
-        let photosViewModelItems: [PhotosViewModelItem] = [PhotosViewModelItem(images: images)]
+    // MARK: - ViewModel
 
-        let posts = GetPosts.fetch()
-        let postViewModels = posts.map(PostViewModelItem.fromPost)
-
-        return photosViewModelItems + postViewModels
-    }()
-
-    private let user: User
+    private let viewOutput: ProfileViewOutput
 
     // MARK: - Initializers
 
-    init(_ user: User) {
-        self.user = user
+    init(_ viewOutput: ProfileViewOutput) {
+        self.viewOutput = viewOutput
         super.init(nibName: nil, bundle: nil)
-        self.headerView.update(user: user)
     }
 
     required init?(coder: NSCoder) {
@@ -74,6 +74,7 @@ class ProfileViewController: UIViewController {
         addSubviews()
         setupConstraints()
         tuneTableView()
+        bindView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -83,6 +84,20 @@ class ProfileViewController: UIViewController {
     }
 
     // MARK: - Private
+
+    private func bindView() {
+        viewOutput.config.sink { [weak self] config in
+            guard let self else { return }
+            headerView.update(user: config.user)
+            items = config.items
+            tableView.reloadData()
+        }
+        .store(in: &cancellables)
+
+        headerView.onStatusSet = { [weak self] status in
+            self?.viewOutput.onSetStatusAction(status)
+        }
+    }
 
     private func tuneTableView() {
         tableView.tableFooterView = tableFooterView
@@ -112,11 +127,11 @@ class ProfileViewController: UIViewController {
 
 extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        data.count
+        items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = data[indexPath.row]
+        let item = items[indexPath.row]
         switch item {
         case let postItem as PostViewModelItem:
             let cell: PostTableViewCell = tableView.dequeueReusableCell(for: indexPath)
@@ -142,7 +157,7 @@ extension ProfileViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = data[indexPath.row]
+        let item = items[indexPath.row]
         switch item {
         case _ as PhotosViewModelItem:
             navigationController?.pushViewController(PhotosViewController(), animated: true)

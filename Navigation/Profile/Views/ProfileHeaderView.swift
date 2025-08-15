@@ -8,6 +8,9 @@
 import UIKit
 
 class ProfileHeaderView: UIView {
+    // MARK: - Слушатели
+    var onStatusSet: ((String) -> Void)?
+
     // MARK: - Константы
 
     private static let avatarAnimationDuration: TimeInterval = 0.3
@@ -91,7 +94,7 @@ class ProfileHeaderView: UIView {
             titleColor: .white
         ) { [weak self] in
             guard let self else { return }
-            self.statusLabel.text = self.statusText
+            onStatusSet?(self.statusText)
         }
         button.backgroundColor = UIColor.systemBlue
         button.layer.cornerRadius = 4
