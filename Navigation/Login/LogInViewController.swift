@@ -87,7 +87,7 @@ class LogInViewController: UIViewController {
         return scrollView
     }()
 
-    private let coordinator: Coordinator
+    private let coordinator: AppCoordinator
     private let userService: UserService
 
     private lazy var contentView: UIView = {
@@ -110,7 +110,7 @@ class LogInViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    init(coordinator: Coordinator, userService: UserService) {
+    init(coordinator: AppCoordinator, userService: UserService) {
         self.coordinator = coordinator
         self.userService = userService
         super.init(nibName: nil, bundle: nil)
