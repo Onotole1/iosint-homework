@@ -11,17 +11,17 @@ struct ContainerFactory {
         let container = Container()
         container.register(LogInViewController.self) { resolver in
             LogInViewController(
-                coordinator: resolver.resolve(Coordinator.self)!,
+                coordinator: resolver.resolve(AppCoordinator.self)!,
                 userService: resolver.resolve(UserService.self)!,
             )
         }
         container.register(PhotosViewController.self) { _ in PhotosViewController() }
         container.register(PostViewControllerFactory.self) { _ in PostViewControllerFactoryImpl() }
-        container.register(Coordinator.self) { _ in CoordinatorImpl(container: container) }
+        container.register(AppCoordinator.self) { _ in AppCoordinatorImpl(container: container) }
         container.register(FeedModel.self) { _ in FeedModelImpl(secretWord: "qwerty") }
         container.register(FeedViewController.self) { resolver in
             FeedViewController(
-                postViewControllerFactory: resolver.resolve(PostViewControllerFactory.self)!,
+                feedCoordinator: resolver.resolve(FeedBaseCoordinator.self)!,
                 feedModel: resolver.resolve(FeedModel.self)!
             )
         }
@@ -38,8 +38,23 @@ struct ContainerFactory {
         }
         container.register(ProfileViewOutputFactory.self) { _ in ProfileViewModelFactory() }
         container.register(ProfileViewControllerFactory.self) { resolver in
-            ProfileViewControllerFactoryImpl(profileViewOutputFactory: resolver.resolve(ProfileViewOutputFactory.self)!)
+            ProfileViewControllerFactoryImpl(
+                profileViewOutputFactory: resolver.resolve(ProfileViewOutputFactory.self)!,
+                profileCoordinator: resolver.resolve(ProfileBaseCoordinator.self)!,
+            )
         }
+        container.register(ProfileBaseCoordinator.self) { _ in
+            ProfileCoordinator(container: container)
+        }.inObjectScope(ObjectScope.container)
+        container.register(FeedBaseCoordinator.self) { _ in
+            FeedCoordinator(container: container)
+        }.inObjectScope(ObjectScope.container)
+        container.register(MainBaseCoordinator.self) { resolver in
+            MainCoordinator(
+                feedCoordinator: resolver.resolve(FeedBaseCoordinator.self)!,
+                profileCoordinator: resolver.resolve(ProfileBaseCoordinator.self)!,
+            )
+        }.inObjectScope(ObjectScope.container)
         return container
     }
 }

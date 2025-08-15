@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: scene)
         container.register(UIWindow.self) { _ in window }
         self.window = window
-        container.resolve(Coordinator.self)!.start()
+        container.resolve(AppCoordinator.self)!.start()
         window.makeKeyAndVisible()
     }
 

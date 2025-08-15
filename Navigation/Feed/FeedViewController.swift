@@ -53,15 +53,15 @@ class FeedViewController: UIViewController {
 
     private var cancellables = Set<AnyCancellable>()
 
-    private let postViewControllerFactory: PostViewControllerFactory
+    private let feedCoordinator: FeedBaseCoordinator
 
     private let feedModel: FeedModel
 
     init(
-        postViewControllerFactory: PostViewControllerFactory,
+        feedCoordinator: FeedBaseCoordinator,
         feedModel: FeedModel,
     ) {
-        self.postViewControllerFactory = postViewControllerFactory
+        self.feedCoordinator = feedCoordinator
         self.feedModel = feedModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -81,11 +81,7 @@ class FeedViewController: UIViewController {
         buttons.forEach(stackView.addArrangedSubview)
         buttons.forEach { (button: UIButton) in
             button.on(.touchUpInside) { [weak self] _ in
-                guard let self else { return }
-                self.navigationController?.pushViewController(
-                    self.postViewControllerFactory.create(nil),
-                    animated: true
-                )
+                self?.feedCoordinator.showPost()
             }
         }
 
