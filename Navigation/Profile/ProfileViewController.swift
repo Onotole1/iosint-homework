@@ -14,19 +14,29 @@ protocol ProfileViewControllerFactory {
 
 class ProfileViewControllerFactoryImpl: ProfileViewControllerFactory {
     private let profileViewOutputFactory: ProfileViewOutputFactory
+    private let profileCoordinator: ProfileBaseCoordinator
 
-    init(profileViewOutputFactory: ProfileViewOutputFactory) {
+    init(
+        profileViewOutputFactory: ProfileViewOutputFactory,
+        profileCoordinator: ProfileBaseCoordinator,
+    ) {
         self.profileViewOutputFactory = profileViewOutputFactory
+        self.profileCoordinator = profileCoordinator
     }
 
     func create(user: User) -> ProfileViewController {
-        ProfileViewController(profileViewOutputFactory.makeOutput(user: user))
+        ProfileViewController(
+            viewOutput: profileViewOutputFactory.makeOutput(user: user),
+            profileCoordinator: profileCoordinator,
+        )
     }
 }
 
 class ProfileViewController: UIViewController {
 
     private var cancellables: Set<AnyCancellable> = []
+
+    private let profileCoordinator: ProfileBaseCoordinator
 
     // MARK: - Data
     private var items: [ProfileViewModelItem] = []
@@ -37,8 +47,9 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Initializers
 
-    init(_ viewOutput: ProfileViewOutput) {
+    init(viewOutput: ProfileViewOutput, profileCoordinator: ProfileBaseCoordinator) {
         self.viewOutput = viewOutput
+        self.profileCoordinator = profileCoordinator
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -160,7 +171,7 @@ extension ProfileViewController: UITableViewDelegate {
         let item = items[indexPath.row]
         switch item {
         case _ as PhotosViewModelItem:
-            navigationController?.pushViewController(PhotosViewController(), animated: true)
+            profileCoordinator.showPhotos()
         default:
             break
         }
