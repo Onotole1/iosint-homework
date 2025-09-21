@@ -7,7 +7,9 @@
 import Foundation
 
 struct NetworkService {
-    static func request(for configuration: AppConfiguration) {
+    static func request(
+        for configuration: AppConfiguration,
+    ) async -> Result<(data: Data, response: URLResponse), NetworkError> {
         let loader = { (url: URL) async in
             await URLSession.shared.downloadData(from: url)
                 .doOnSuccess {
@@ -22,15 +24,13 @@ struct NetworkService {
                 }
         }
 
-        Task {
-            switch configuration {
-            case .planet(let url):
-                await loader(url)
-            case .species(let url):
-                await loader(url)
-            case .starship(let url):
-                await loader(url)
-            }
+        switch configuration {
+        case .planet(let url):
+            return await loader(url)
+        case .species(let url):
+            return await loader(url)
+        case .starship(let url):
+            return await loader(url)
         }
     }
 }

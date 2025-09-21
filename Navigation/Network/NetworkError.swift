@@ -9,4 +9,5 @@ enum NetworkError: Error {
     case invalidURL
     case networkError(Error)
     case httpError(statusCode: Int)
+    case decodingError(Error)
 }
