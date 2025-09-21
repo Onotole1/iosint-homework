@@ -25,6 +25,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         container.resolve(AppCoordinator.self)!.start()
         window.makeKeyAndVisible()
+
+        let appConfigurations = [
+            AppConfiguration.planet(url: URL(string: "https://swapi.dev/api/planets/5")!),
+            AppConfiguration.species(url: URL(string: "https://swapi.dev/api/species/1")!),
+            AppConfiguration.starship(url: URL(string: "https://swapi.dev/api/starships/2")!),
+        ]
+
+        NetworkService.request(for: appConfigurations.randomElement()!)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
