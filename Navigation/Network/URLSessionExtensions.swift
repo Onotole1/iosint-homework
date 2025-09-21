@@ -7,7 +7,7 @@
 import Foundation
 
 extension URLSession {
-    func downloadData(from url: URL) async -> Result<(data: Data, response: URLResponse), NetworkError> {
+    func downloadData(from url: URL?) async -> Result<(data: Data, response: URLResponse), NetworkError> {
         guard let validURL = url as URL? else {
             return .failure(.invalidURL)
         }

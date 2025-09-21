@@ -17,15 +17,14 @@ class InfoViewController: UIViewController {
         }
     }()
 
-    private lazy var resultLabel = UILabel()
+    private lazy var nameLabel = UILabel()
+    private lazy var rotationPeriodLabel = UILabel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        alertButton.setTitle("Alert", for: .normal)
-
         view.backgroundColor = .systemBackground
-        [alertButton, resultLabel].forEach(view.addSubview)
+        [alertButton, nameLabel, rotationPeriodLabel].forEach(view.addSubview)
 
         setupConstraints()
     }
@@ -38,9 +37,16 @@ class InfoViewController: UIViewController {
             ]
         }
 
-        resultLabel.setupConstraints {
+        nameLabel.setupConstraints {
             [
                 $0.topAnchor.constraint(equalTo: alertButton.bottomAnchor, constant: 16),
+                $0.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ]
+        }
+
+        rotationPeriodLabel.setupConstraints {
+            [
+                $0.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 16),
                 $0.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             ]
         }
@@ -48,14 +54,11 @@ class InfoViewController: UIViewController {
 
     private func didTapLoadButton() {
         Task {
-            let result = await NetworkService.request(for: AppConfiguration.planet(url: URL(string: "https://swapi.dev/api/planets/5")!))
-                .flatMap { data -> Result<String, NetworkError> in
+            let result = await URLSession.shared.downloadData(from: URL(string: "https://swapi.dev/api/planets/1"))
+                .flatMap { data -> Result<Planet, NetworkError> in
                     do {
-                        // swiftlint:disable force_cast
-                        let response = try JSONSerialization.jsonObject(with: data.data, options: []) as! [String: Any]
-                        let name: String = response["name"] as! String
-                        // swiftlint:enable force_cast
-                        return .success(name)
+                        let decoder = JSONDecoder()
+                        return .success(try decoder.decode(Planet.self, from: data.data))
                     } catch {
                         return .failure(NetworkError.decodingError(error))
                     }
@@ -63,10 +66,12 @@ class InfoViewController: UIViewController {
 
             await MainActor.run {
                 switch result {
-                case .success(let name):
-                    self.resultLabel.text = name
+                case .success(let planet):
+                    self.nameLabel.text = planet.name
+                    self.rotationPeriodLabel.text = planet.rotationPeriod
                 case .failure(let error):
-                    self.resultLabel.text = error.localizedDescription
+                    self.nameLabel.text = error.localizedDescription
+                    self.rotationPeriodLabel.text = ""
                 }
             }
         }
