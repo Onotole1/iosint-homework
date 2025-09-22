@@ -13,16 +13,24 @@ protocol PostViewControllerFactory {
 }
 
 class PostViewControllerFactoryImpl: PostViewControllerFactory {
+    private let feedCoordinator: FeedBaseCoordinator
+
+    init(feedCoordinator: FeedBaseCoordinator) {
+        self.feedCoordinator = feedCoordinator
+    }
+
     func create(_ post: Post?) -> PostViewController {
-        PostViewController(post)
+        PostViewController(post, feedCoordinator: feedCoordinator)
     }
 }
 
 class PostViewController: UIViewController {
     private var post: Post?
+    private let feedCoordinator: FeedBaseCoordinator
 
-    init(_ post: Post?) {
+    init(_ post: Post?, feedCoordinator: FeedBaseCoordinator) {
         self.post = post
+        self.feedCoordinator = feedCoordinator
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -45,6 +53,6 @@ class PostViewController: UIViewController {
     }
 
     @objc private func showInfo() {
-        present(InfoViewController(), animated: true)
+        feedCoordinator.showInfo()
     }
 }

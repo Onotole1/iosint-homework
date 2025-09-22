@@ -9,6 +9,7 @@ import Swinject
 struct ContainerFactory {
     static func makeContainer() -> Container {
         let container = Container()
+        registerCoordinators(container: container)
         container.register(LogInViewController.self) { resolver in
             LogInViewController(
                 coordinator: resolver.resolve(AppCoordinator.self)!,
@@ -16,8 +17,9 @@ struct ContainerFactory {
             )
         }
         container.register(PhotosViewController.self) { _ in PhotosViewController() }
-        container.register(PostViewControllerFactory.self) { _ in PostViewControllerFactoryImpl() }
-        container.register(AppCoordinator.self) { _ in AppCoordinatorImpl(container: container) }
+        container.register(PostViewControllerFactory.self) { resolver in
+            PostViewControllerFactoryImpl(feedCoordinator: resolver.resolve(FeedBaseCoordinator.self)!)
+        }
         container.register(FeedModel.self) { _ in FeedModelImpl(secretWord: "qwerty") }
         container.register(FeedViewController.self) { resolver in
             FeedViewController(
@@ -43,6 +45,11 @@ struct ContainerFactory {
                 profileCoordinator: resolver.resolve(ProfileBaseCoordinator.self)!,
             )
         }
+        container.register(InfoViewController.self) { _ in InfoViewController(viewOutput: PlanetViewModel()) }
+        return container
+    }
+
+    private static func registerCoordinators(container: Container) {
         container.register(ProfileBaseCoordinator.self) { _ in
             ProfileCoordinator(container: container)
         }.inObjectScope(ObjectScope.container)
@@ -55,6 +62,6 @@ struct ContainerFactory {
                 profileCoordinator: resolver.resolve(ProfileBaseCoordinator.self)!,
             )
         }.inObjectScope(ObjectScope.container)
-        return container
+        container.register(AppCoordinator.self) { _ in AppCoordinatorImpl(container: container) }
     }
 }

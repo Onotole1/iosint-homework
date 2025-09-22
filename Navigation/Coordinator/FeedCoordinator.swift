@@ -27,4 +27,8 @@ class FeedCoordinator: FeedBaseCoordinator {
         let factory = container.resolve(PostViewControllerFactory.self)!
         navigationRootViewController?.pushViewController(factory.create(nil), animated: true)
     }
+
+    func showInfo() {
+        navigationRootViewController?.present(container.resolve(InfoViewController.self)!, animated: true)
+    }
 }
