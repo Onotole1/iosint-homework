@@ -31,6 +31,7 @@ extension Coordinator {
 protocol FeedBaseCoordinator: Coordinator {
     var parentCoordinator: MainBaseCoordinator? { get set }
     func showPost()
+    func showInfo()
 }
 
 protocol ProfileBaseCoordinator: Coordinator {

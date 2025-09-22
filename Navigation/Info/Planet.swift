@@ -8,9 +8,11 @@
 struct Planet: Decodable {
     let name: String
     let rotationPeriod: String
+    let residents: [String]
 
     enum CodingKeys: String, CodingKey {
         case name
         case rotationPeriod = "rotation_period"
+        case residents
     }
 }
